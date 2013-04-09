@@ -65,67 +65,56 @@ To define a table view:
 
 **[chart] attributes**
 
-<table>
-<tr>
-<td>id</td>
-<td>The id of the chart (optional, default is a system generated id).<br />
-</tr>
-<tr>
-<td>csv</td>
-<td>A reference to a csv formatted data entity.<br />
-This can be a the id of csv shortcode starting with a # or an uri to a csv file (http(s)://).</td>
-</tr>
-<tr>
-<td>type</td>
-<td>The type of chart that must be rendered.<br />
-bar | bar.horizontal | pie | line</td>
-</tr>
-<tr>
-<td>category</td>
-<td>The column name of the csv that represents the category of the chart. Case-sensitiv!</td>
-</tr>
-<td>value</td>
-<td>The column name of the csv that represents the value of the chart. Case-sensitiv!</td>
-</tr>
-<tr>
-<td>format</td>
-<td>The format of the data in the csv. Comma-separated, category first, value second.<br />
-s = String<br />
-i = Integer<br />
-f = Float<br />
-yyyy-mm-dd | yy-mm-dd | yyyy/mm/dd | yy/mm/dd | dd.mm.yyyy | dd.mm.yy = Date</td>
-</tr>
-<td>color</td>
-<td>The color of each category (optional, default is 'auto').<br />
-A list of colors, or 'auto'. Colors repeat if there aren't enough.</td>
-</tr>
-<tr>
-<td>style</td>
-<td>A CSS style for the html figure element (optional).</td>
-</tr>
-<tr>
-<td>title</td>
-<td>The title of the chart rendered as a figcaption.</td>
-</tr>
-<tr>
-<td>description</td>
-<td>The description of the chart included in the SVG. Do it for search engines!</td>
-</tr>
-<tr>
-<td>sort</td>
-<td>Column of the csv to sort. (*Not yet implemented!*)</td>
-</tr>
-<tr>
-<td>img</td>
-<td>The url of an alternative image for older browsers that do not support SVG.<br />
-Usually a screenshot of the chart.</td>
-</tr>
-<tr>
-<td>debug</td>
-<td>Print debug information to the browser console (optional, default is 'false').<br />
-true | false</td>
-</tr>
-</table>
+<pre>
+id           The id of the chart (optional, default is a system 
+             generated id).
+
+csv          A reference to a csv formatted data entity.
+             This can be a the id of [csv] starting with a # or
+             an uri to a csv file (http(s)://).
+
+type         The type of chart that must be rendered.
+
+             bar | bar.horizontal | pie | line
+
+category     The column name of the csv that represents the
+             category of the chart. Case-sensitiv!
+
+value        The column name of the csv that represents the 
+             value of the chart. Case-sensitiv!
+
+format       The format of the data in the csv. Comma-separated, 
+             category first, value second.
+          
+             s = String
+             i = Integer
+             f = Float
+             yyyy-mm-dd | yy-mm-dd | yyyy/mm/dd | 
+             yy/mm/dd | dd.mm.yyyy | dd.mm.yy    =   Date
+          
+color        The color of each category (optional, default
+             is 'auto').
+             A list of colors, or 'auto'. Colors repeat if
+             there aren't enough.
+          
+style        A css style for the html figure element (optional).
+
+title        The title of the chart rendered as a figcaption.
+
+description  The description of the chart included in the SVG. 
+             Do it for search engines!
+
+sort         Column of the csv to sort. (Not yet implemented!)
+
+img          The url of an alternative image for older browsers 
+             that do not support SVG.
+             Usually a screenshot of the chart.
+
+debug        Print debug information to the browser console 
+             (optional, default is 'false').
+             
+             true | false
+</pre>
 
 Enjoy!
 
