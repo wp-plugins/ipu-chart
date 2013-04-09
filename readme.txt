@@ -15,7 +15,8 @@ IPU-Chart is an easy to use shortcode that creates SVG based bar, pie and line c
 
 IPU-Chart takes a csv file (Texteditor, Excel, Numbers etc.) and displays it as a chart. IPU Chart is based on SVG and works perfectly on large computer screens as well as on tablets and smaller mobile screens. For browsers that do not support SVG an alternative image can be set.
 
-Features:
+<h2>Features</h2>
+
 * Create bar, pie and line charts
 * Enter the csv data directy in you blog or page
 * Load csv data from a remote location
@@ -23,19 +24,21 @@ Features:
 * Define colors and number formats of the chart
 * Create an additional table view of the csv data.
 
-Usage:
+<h2>Usage</h2>
 
 First, define your data:
-
+<pre>
 [csv id='popdata']Country,Population
 China,1343.24
 India,1205.07
 United States,313.85
 Indonesia,248.22
 Brazil,205.72[/csv]
+</pre>
 
 Second, define the chart:
 
+<pre>
 [chart id='chart0' 
        csv='#popdata' 
        type='bar | bar.horizontal | pie | line'
@@ -48,6 +51,9 @@ Second, define the chart:
        sort='Population"
        img='http://www.example.com/chart0.png'
        debug='false']
+</pre>
+
+Enjoy!
 
 == Installation ==
 
