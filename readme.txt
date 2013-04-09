@@ -20,9 +20,10 @@ The plugin takes a csv file (Texteditor, Excel, Numbers etc.) and displays it as
 * Create bar, pie and line charts
 * Enter the csv data directy in you blog or page
 * Load csv data from a remote location
-* Create multiple views of the csv data.
+* Create multiple views of the csv data
+* Animated tooltip for chart details (see screenshots)
 * Define colors and number formats of the chart
-* Create an additional table view of the csv data.
+* Create an additional table view of the csv data
 
 **Usage**
 
@@ -50,6 +51,14 @@ Second, define the chart:
        title='Top five most populous countries of the world...'
        sort='Population"
        img='http://www.example.com/chart0.png'
+       debug='false']
+</pre>
+
+To define a table view:
+
+<pre>
+[table id='table0' 
+       csv='#popdata'
        debug='false']
 </pre>
 
