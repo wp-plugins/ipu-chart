@@ -27,18 +27,15 @@ Usage:
 
 First, define your data:
 
-<pre>
 [csv id='popdata']Country,Population
 China,1343.24
 India,1205.07
 United States,313.85
 Indonesia,248.22
 Brazil,205.72[/csv]
-</pre>
 
 Second, define the chart:
 
-<pre>
 [chart id='chart0' 
        csv='#popdata' 
        type='bar | bar.horizontal | pie | line'
@@ -51,7 +48,6 @@ Second, define the chart:
        sort='Population"
        img='http://www.example.com/chart0.png'
        debug='false']
-</pre>
 
 == Installation ==
 
