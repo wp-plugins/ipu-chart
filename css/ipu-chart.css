@@ -1,0 +1,106 @@
+figure.chart {
+  //border: 2px solid lightgray;
+  //padding: 20px;
+}
+
+.chart figcaption {
+  //border: 2px solid yellow;
+  //font: 0.9em sans-serif;
+}
+
+
+.chart svg {
+  //border: 2px solid red;
+  font: 0.8em sans-serif;
+}
+
+/* Pie chart definitions */
+.arc path {
+  stroke: white;
+}
+
+/* Line chart definitions */
+
+.line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5px;
+}
+
+.dot {
+	fill: dimGray;
+}
+
+/* Axis definitions */
+
+.axis {
+	stroke: lightGray;
+	stroke-opacity: 0.8;
+	shape-rendering: crispEdges;
+}
+
+.x.axis {
+}
+	
+.x.axis path {
+	fill: none;
+	stroke-opacity: 0.2;
+}
+	
+.x.axis * line {
+//stroke-dasharray: 9,5;
+}
+	
+.x.axis * text {
+	stroke: dimGray;
+	stroke-width: 0.1;
+	stroke-opacity: 0.8;
+}
+
+.x.label {
+	fill: dimGray;
+	font-weight: bold;
+}	
+
+.y.axis {
+}
+	
+.y.axis path {
+	fill: none;
+	stroke-opacity: 0.2;
+}
+ 	 
+.y.axis * line {
+	//stroke-dasharray: 9,5;
+}
+
+.y.axis * text {
+	stroke: dimGray;
+	stroke-width: 0.1;
+	stroke-opacity: 0.8;
+}
+
+.y.label {
+	fill: dimGray;
+	font-weight: bold;
+}
+
+/* Tooltip definitions */
+
+div.iputooltip {
+	font: 0.8em sans-serif;
+	line-height: 1.5;
+	color: Black;
+    position: absolute;
+    padding: 5px 10px 5px 10px;
+    background: #faf8ba; //#ffffcc;
+    border-radius: 8px;
+	box-shadow: 10px 10px 5px gray;
+}
+
+div.iputooltip span.label {
+	display: inline-block;
+	width: 40%;
+	margin-right: 10px;
+	font-weight: bold;
+}
