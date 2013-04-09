@@ -49,6 +49,7 @@ Second, define the chart:
        color='DarkOrange,DarkBlue,Maroon'
        style='height: 350px'
        title='Top five most populous countries of the world...'
+       description='The top five most populous countries of the world...'
        sort='Population"
        img='http://www.example.com/chart0.png'
        debug='false']
@@ -60,6 +61,47 @@ To define a table view:
 [table id='table0' 
        csv='#popdata'
        debug='false']
+</pre>
+
+**[chart] attributes**
+
+<pre>
+id           The id of the chart (optional, default is a system generated id).
+
+csv          A reference to a csv formatted data entity.
+             This can be a the id of [csv] starting with a # or an uri to a csv file (http(s)://).
+
+type         The type of chart that must be rendered.
+
+             bar | bar.horizontal | pie | line
+
+category     The column name of the csv that represents the category of the chart. Case-sensitiv!
+
+value        The column name of the csv that represents the value of the chart. Case-sensitiv!
+
+format       The format of the data in the csv. Comma-separated, category first, value second.
+          
+             s = String
+             i = Integer
+             f = Float
+             yyyy-mm-dd | yy-mm-dd | yyyy/mm/dd | yy/mm/dd | dd.mm.yyyy | dd.mm.yy = Date
+          
+color        The color of each category (optional, default is 'auto').
+             A list of colors, or 'auto'. Colors repeat if there aren't enough.
+          
+style        A css style for the html figure element (optional).
+
+title        The title of the chart rendered as a figcaption.
+
+description  The description of the chart included in the SVG. Do it for search engines!
+
+sort         Column of the csv to sort. (Not yet implemented!)
+
+img          The url of an alternative image for older browsers that do not support SVG.
+             Usually a screenshot of the chart.
+
+debug        Print debug information to the browser console (optional, default is 'false').
+             true | false
 </pre>
 
 Enjoy!
@@ -81,7 +123,7 @@ For questions or issues with IPU-Chart please use this support channels:
 
 == Screenshots ==
 
-1. Bar chart example
+1. Bar chart example (with a tooltip)
 2. Horizontal bar chart example
 3. Pie Chart example
 4. Line chart example
