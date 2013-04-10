@@ -9,11 +9,11 @@ var userAgent = navigator.userAgent.toLowerCase(),
 	tooltip;
 
 function parserFor(format) {
-	format = format.trim();
- 	if(format == "i") return parseInt;
- 	if(format == "f") return parseFloat;
- 	if(format == "s") return function(s) { return s; };
- 	if(format == "yyyy-mm-dd") return d3.time.format("%Y-%m-%d").parse;
+	format = format.toLowerCase().trim();
+ 	if(format == "i" || format == "integer") return parseInt;
+ 	if(format == "f" || format == "float") return parseFloat;
+ 	if(format == "s" || format == "string") return function(s) { return s; };
+ 	if(format == "yyyy-mm-dd" || format == "date") return d3.time.format("%Y-%m-%d").parse;
  	if(format == "yy-mm-dd") return d3.time.format("%y-%m-%d").parse;
  	if(format == "yyyy/mm/dd") return d3.time.format("%Y/%m/%d").parse;
  	if(format == "yy/mm/dd") return d3.time.format("%y/%m/%d").parse;
@@ -23,10 +23,10 @@ function parserFor(format) {
 }
  
 function scaleFor(format) {
-	format = format.trim();
- 	if(format == "i") return d3.scale.linear();
- 	if(format == "f") return d3.scale.linear();
- 	if(format == "s") return d3.scale.ordinal();
+	format = format.toLowerCase().trim();
+ 	if(format == "i" || format == "integer") return d3.scale.linear();
+ 	if(format == "f" || format == "float") return d3.scale.linear();
+ 	if(format == "s" || format == "string") return d3.scale.ordinal();
  	return d3.time.scale();
 }
  

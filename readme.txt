@@ -15,7 +15,7 @@ IPU-Chart is an easy to use shortcode that creates SVG based bar, pie and line c
 
 The plugin takes a csv file (Texteditor, Excel, Numbers etc.) and displays it as a chart. IPU-Chart is based on SVG and works perfectly on large computer screens as well as on tablets and smaller mobile screens. For browsers that do not support SVG an alternative image can be set.
 
-**Features**
+= Features =
 
 * Create bar, pie and line charts
 * Enter the csv data directy in you blog or page
@@ -25,9 +25,10 @@ The plugin takes a csv file (Texteditor, Excel, Numbers etc.) and displays it as
 * Define colors and number formats of the chart
 * Create an additional table view of the csv data
 
-**Usage**
+= Usage =
 
-First, define your data:
+First, define your data. You can create it immediately in WordPress or copy and paste it from an export of your favourite spreadsheet application.
+
 <pre>
 [csv id='popdata']Country,Population
 China,1343.24
@@ -37,7 +38,7 @@ Indonesia,248.22
 Brazil,205.72[/csv]
 </pre>
 
-Second, define the chart:
+Second, define the chart. Reference the csv (don't forget the '#'). Set the chart type and the category and value column. Define the format (string, integer, float or date) of the category and value columns.
 
 <pre>
 [chart id='chart0' 
@@ -45,8 +46,8 @@ Second, define the chart:
        type='bar | bar.horizontal | pie | line'
        category='Country'
        value='Population'
-       format='s,f'
-       color='DarkOrange,DarkBlue,Maroon'
+       format='sting,float'
+       color='DarkOrange, DarkBlue'
        style='height: 350px'
        title='Top five most populous countries of the world...'
        description='The top five most populous countries of the world...'
@@ -55,7 +56,7 @@ Second, define the chart:
        debug='false']
 </pre>
 
-To define a table view:
+To define a table view just referenc the csv:
 
 <pre>
 [table id='table0' 
@@ -63,58 +64,10 @@ To define a table view:
        debug='false']
 </pre>
 
-**[chart] attributes**
+= Further Reading =
 
-<pre>
-id           The id of the chart (optional, default is a system 
-             generated id).
-
-csv          A reference to a csv formatted data entity.
-             This can be a the id of [csv] starting with a # or
-             an uri to a csv file (http(s)://).
-
-type         The type of chart that must be rendered.
-
-             bar | bar.horizontal | pie | line
-
-category     The column name of the csv that represents the
-             category of the chart. Case-sensitiv!
-
-value        The column name of the csv that represents the 
-             value of the chart. Case-sensitiv!
-
-format       The format of the data in the csv. Comma-separated, 
-             category first, value second.
-          
-             s = String
-             i = Integer
-             f = Float
-             yyyy-mm-dd | yy-mm-dd | yyyy/mm/dd | 
-             yy/mm/dd | dd.mm.yyyy | dd.mm.yy    =   Date
-          
-color        The color of each category (optional, default
-             is 'auto').
-             A list of colors, or 'auto'. Colors repeat if
-             there aren't enough.
-          
-style        A css style for the html figure element (optional).
-
-title        The title of the chart rendered as a figcaption.
-
-description  The description of the chart included in the SVG. 
-             Do it for search engines!
-
-sort         Column of the csv to sort. (Not yet implemented!)
-
-img          The url of an alternative image for older browsers 
-             that do not support SVG.
-             Usually a screenshot of the chart.
-
-debug        Print debug information to the browser console 
-             (optional, default is 'false').
-             
-             true | false
-</pre>
+* The [IPU-Chart for WordPress User Guide](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/ "IPU-Chart User Guide") describes the plugin in details.
+* The product page [IPU-Chart SVG Chart Library](https://www.ipublia.com/products/ipu-chart-svg-chart-library/ "IPU-Chart Product Page") describes and shows the newest features of IPU-Chart.
 
 Enjoy!
 
@@ -127,7 +80,7 @@ Enjoy!
 
 For questions or issues with IPU-Chart please use this support channels:
 
-1. [Docs](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/)
+1. [Docs](https://www.ipublia.com/ipu-chart/)
 1. [FAQ](https://www.ipublia.com/support/faq/)
 1. [Support Forum](http://wordpress.org/support/plugin/ipu-chart)
 
