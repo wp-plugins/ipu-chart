@@ -56,7 +56,7 @@ Second, define the chart. Reference the csv (don't forget the '#'). Set the char
        debug='false']
 </pre>
 
-To define a table view just referenc the csv:
+To define a table view just reference the csv (don't forget the '#'):
 
 <pre>
 [table id='table0' 
