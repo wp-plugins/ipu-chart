@@ -1,11 +1,11 @@
 <?php
 /*
 	Plugin Name: IPU-Chart
-	Plugin URI: https://www.ipublia.com/ipu-chart/
+	Plugin URI: https://www.ipublia.com/products/ipu-chart-svg-chart-library/
 	Description: Creates SVG based charts out of your CSV data. Currently supports bar, pie and line charts.
 	Author: ipublia, Thomas Müller Flury
 	Version: 0.2
-	Author URI: https://www.ipublia.com/ipu-chart/
+	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuchart
 	Domain Path: /lang
  */
