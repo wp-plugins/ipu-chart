@@ -8,32 +8,129 @@ var userAgent = navigator.userAgent.toLowerCase(),
 	defaultOpacity = 0.7,
 	tooltip;
 
+function toArray(l) {
+	ll = l.split(',');
+	for(var i=0; i<ll.length; i++) { 
+		ll[i] = ll[i].trim(); 
+	}
+	return ll;
+}
+
 function parserFor(format) {
-	format = format.toLowerCase().trim();
+	format = format.trim();
  	if(format == "i" || format == "integer") return parseInt;
  	if(format == "f" || format == "float") return parseFloat;
  	if(format == "s" || format == "string") return function(s) { return s; };
- 	if(format == "yyyy-mm-dd" || format == "date") return d3.time.format("%Y-%m-%d").parse;
+ 	
+  	if(format == "yyyymmdd" || format == "d" || format == "date") return d3.time.format("%Y%m%d").parse;
+ 	if(format == "yyyy-mm-dd") return d3.time.format("%Y-%m-%d").parse;
  	if(format == "yy-mm-dd") return d3.time.format("%y-%m-%d").parse;
  	if(format == "yyyy/mm/dd") return d3.time.format("%Y/%m/%d").parse;
  	if(format == "yy/mm/dd") return d3.time.format("%y/%m/%d").parse;
  	if(format == "dd.mm.yyyy") return d3.time.format("%d.%m.%Y").parse;
  	if(format == "dd.mm.yy") return d3.time.format("%d.%m.%y").parse;
+ 	
  	return d3.time.format(format).parse;
 }
  
 function scaleFor(format) {
-	format = format.toLowerCase().trim();
+	format = format.trim();
  	if(format == "i" || format == "integer") return d3.scale.linear();
  	if(format == "f" || format == "float") return d3.scale.linear();
  	if(format == "s" || format == "string") return d3.scale.ordinal();
  	return d3.time.scale();
 }
- 
-function renderChart(id, csv, type, category, value, format, color, style, title, description, sort, img, debug) {
+
+function parseData(data, category, value, format, debug) {	
+	// Parse the datatypes	
+	for(var i = 0; i < data.length; i++) {
+		for(var j = 0; j < category.length; j++) {
+    		data[i][category[j]] = parserFor(format[j])(data[i][category[j]]);
+    	}
+    	for(var j = 0; j < value.length; j++) {
+    		data[i][value[j]] = parserFor(format[category.length + j])(data[i][value[j]]);
+    	}
+    }
+    return data;	
+}
+
+function colorScale(color) { 
+    if(color[0].toLowerCase().trim() == "auto") {
+    	color = d3.scale.category20();
+    } else {
+		color=d3.scale.ordinal().range(color);
+	}
+	return color;
+}
+
+function renderNoSvgSupport(figure, img) {
 	
-	var debug = (debug.toLowerCase() == "true");
-	if(debug) { console.log("---------- START RENDERING CHART (" + id + ", " + csv + ", " + type + ") ----------"); };
+	figure.select("svg").remove();
+	
+	if(img && img.trim() != "") {
+		image = figure.append("img")
+			.attr("src", img)
+			.attr("width", parseInt(figure.style("width")))
+			.attr("height", parseInt(figure.style("height")) - 40);
+	} else {
+		figure.append("p")
+			.text("Sorry, can't display the chart. Use a newer, SVG enabled browser.")
+			.attr("style", "color: red;");
+		figure.attr("style", "border: 1px solid lightgray; padding: 1em;");
+	}
+}
+
+function renderError(figure, error) {
+	figure.select("svg").remove();
+	figure.append("p")
+		.text(error)
+		.attr("style", "color: red;");
+	figure.attr("style", "border: 1px solid lightgray; padding: 1em;");
+	return false;
+}
+
+function createFigureElement(id, title, description, style) {
+	var figure = d3.select('#' + id);	
+	figure.attr("style", style);
+
+	var	svg = figure.append("svg");
+	
+	svg.append("g")
+		.attr("class", "meta")
+		.append("title").text(title)
+		.append("description").text(description);
+		
+	figure.append("figcaption").text(title);	
+
+    var width = parseInt(figure.style("width")),
+    	height = parseInt(figure.style("height")) - parseInt(figure.select("figcaption").style("height")) - 20;
+    	    
+	svg.attr("viewBox", "0 0 " + width + " " + height)
+    	.attr("preserveAspectRatio", "xMidYMid meet")
+       	.attr("width", width)
+       	.attr("height", height)
+       	.append("g")
+       		.attr("class", "main");
+	
+	return figure;
+}
+
+function createTooltip() {
+	if(tooltip == null) {
+		tooltip = d3.select("body").append("div")
+    		.attr("class", "iputooltip")
+        	.style("opacity", 0.0)
+        	.style("width", function() {return screen.width > 320 ? "260px" : "160px"; })
+    		.html("<p>tooltip</p>")
+    		.on("touchstart", hideTooltip);
+	}
+	return tooltip;
+}
+
+function renderChart(id, csv, type, category, value, format, color, style, title, description, sort, interpolate, animate, img, debug, version) {
+	
+	debug = (debug.toLowerCase() == "true");
+
 	if(debug) {
 	
 		console.log("CLIENT: "
@@ -41,6 +138,9 @@ function renderChart(id, csv, type, category, value, format, color, style, title
 					+ "\n\ttouch device: " + touch_device
 					+ "\n\tSVG support: " + svgSupport
 					+ "\n\tscreen width/height: " + screen.width + "px/" + screen.height + "px");
+					
+		console.log("PLUGIN: "
+					+ "\n\t" + version);
 					
 					
 		console.log("CALL RENDER CHART: "
@@ -55,138 +155,445 @@ function renderChart(id, csv, type, category, value, format, color, style, title
 					+ "\n\ttitle: " + title
 					+ "\n\tdescription: " + description
 					+ "\n\tsort: " + sort
+					+ "\n\tinterpolate: " + interpolate
+					+ "\n\tanimate: " + animate
 					+ "\n\timg: " + img
 					+ "\n\tdebug: " + debug);
 	}
 	
-	if(!svgSupport) {
+	var figure = createFigureElement(id, title, description, style);
+
+	if(!svgSupport) return renderNoSvgSupport(figure, img);
 		
-		var figure = d3.select('#' + id);
-		figure.attr("style", style);			
-
-		if(img && img.trim() != "") {
-		    var width = parseInt(figure.style("width")),
-    			height = parseInt(figure.style("height")) - 40;
-
-    		figure.append("figcaption").text(title);		
-			image = figure.append("img")
-				.attr("src", img)
-				.attr("width", width)
-				.attr("height", height);
-		} else {
-			figure.append("p").text("Chart: '" + title + "'");
-			figure.append("p")
-					.text("Please use a newer, SVG capable browser to view the chart.")
-					.attr("style", "color: red; ");
-			figure.attr("style", "border: 1px solid lightgray; padding: 1em;");
-		}
-		
-	} else {
-		load(id, csv, type, category, value, format, color, style, title, description, sort, img, debug);
-	}
-}
-
-function load(id, csv, type, category, value, format, color, style, title, description, sort, img, debug) {
-    
+	createTooltip();
+	
+	category = toArray(category);
+	value = toArray(value);
+	format = toArray(format);
+	color = toArray(color);
+	animate = toArray(animate);
+	
+	if(animate[0] == "slow") animate = ["5000", "linear"];
+	else if(animate[0] == "medium") animate = ["2000", "linear"];
+	else if(animate[0] == "fast") animate = ["1000", "linear"];
+	
 	if((/^#/).test(csv)) {
-		div = d3.select(csv),
-		data = d3.csv.parse(div.text());
-		if(debug) { console.log("LOADING DATA SYNC (" + csv + ")"); console.log(data); }
-		render(id, data, type, category, value, format, color, style, title, description, sort, img, debug);  			
+		if(d3.select(csv).empty()) {
+			return renderError(figure, "The csv '" + csv + "' does not exist in this document.");
+		}	
+		data = d3.csv.parse(d3.select(csv).text());
+		if(debug) { console.log("Loaded data (sync): "); console.log(data) };
+		
+		render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
+		
 	} else {
 		d3.csv(csv, function(error, data) {
-			if(debug) { console.log("LOADING DATA ASYNC (" + csv + ")"); console.log(data); }
-			if(error) return console.warn(error);
-			render(id, data, type, category, value, format, color, style, title, description, sort, img, debug);  			
-  		});		
+			if(error) {
+				console.warn("There was an error loading the data: " + error);
+				return renderError(figure, "There was an error loading the data: " + csv);
+			}
+			if(debug) { console.log("Loaded data (async): "); console.log(data) };
+			render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
+  		});  			
 	}
- }
- 
-function render(id, data, type, category, value, format, color, style, title, description, sort, img, debug) {
-    if(debug) { console.log("RENDER (" + id + ")"); };
-        
-	formats = format.split(',');
-	for(var i=0; i<formats.length; i++) { 
-		formats[i] = formats[i].trim(); 
-	}
+}	
 
-    if(debug) { console.log("FORMATS: " + formats); }
-    
-    if(color.toLowerCase().trim() == "auto") {
-    	colors = d3.scale.category20();
-    } else {
-		colors = color.split(',');
-		for(var i=0; i<colors.length; i++) { 
-			colors[i] = colors[i].trim();
-		}
-		colors=d3.scale.ordinal().range(colors);
-	}
-    
-    if(debug) { console.log("COLOR: " + color); }
-    
-	catParser = parserFor(formats[0]);
-	valParser = parserFor(formats[1]);
-
-	/* Not supported by IE 
- 	data.forEach(function(d) {
-    	d[category] = catParser(d[category]);
-    	d[value] = valParser(d[value]);
-    });
-    */
-        
-    for(var i=0; i<data.length; i++) {
-    	data[i][category] = catParser(data[i][category]);
-    	data[i][value] = valParser(data[i][value]);
-    }
-
-    if(debug) { console.log("PARSED DATA: "); console.log(data); }
-    
-	var figure = d3.select('#' + id);
-    	
-	var	svg = figure.append("svg"),
-		meta = svg.append("g").attr("class", "meta");
-		//chart = svg.append("g").attr("class", "main");
+function render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug) {
 	
-	var figcaption = figure.append("figcaption").text(title);	 
-	meta.append("title").text(title);
-	meta.append("description").text(description);
-	figure.attr("style", style);
-		
-    var width = parseInt(figure.style("width")),
-    	height = parseInt(figure.style("height")) - parseInt(figcaption.style("height")) - 20;
+	data = parseData(data, category, value, format, debug);
 
-    if(debug) { console.log("SVG \n\twidth: " + width + "\n\theight: " + height); }
-    
-	svg.attr("viewBox", "0 0 " + width + " " + height)
-    	.attr("preserveAspectRatio", "xMidYMid meet")
-       	.attr("width", width)
-       	.attr("height", height);
-    
-	if(tooltip == null) {
-		tooltip = d3.select("body").append("div")
-    		.attr("class", "iputooltip")
-        	.style("opacity", 0.0)
-        	.style("width", function() {return screen.width > 320 ? "260px" : "160px"; })
-    		.html("<p>tooltip</p>")
-    		.on("touchstart", hideTooltip);
-    }
-    
     if(type.toLowerCase().trim() == "bar") 
-    	renderBar(svg, width, height, data, category, value, formats, colors, debug);
+    	renderBar(figure, data, category, value, format, color, sort, interpolate, animate, debug);
     	
     else if(type.toLowerCase().trim() == "bar.horizontal") 
-    	renderBarHorizontal(svg, width, height, data, category, value, formats, colors, debug);
+    	renderBarHorizontal(figure, data, category, value, format, color, sort, interpolate, animate, debug);
     	 	 
     else if(type.toLowerCase().trim() == "pie") 
-    	renderPie(svg, width, height, data, category, value, formats, colors, debug);
+    	renderPie(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+    	
+    else if(type.toLowerCase().trim() == "donut") 
+    	renderDonut(figure, data, category, value, format, color, sort, interpolate, animate, debug);
     	
 	else if(type.toLowerCase().trim() == "line") 
-    	renderLine(svg, width, height, data, category, value, formats, colors, debug);
+    	renderLine(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+    	
+    else if(type.toLowerCase().trim() == "line.multi") 
+    	renderLineMulti(figure, data, category, value, format, color, sort, interpolate, animate, debug);
 }
+
+function renderLine(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
+	if(debug) { console.log("START RENDER LINE"); }
+	
+	var color = colorScale(color);
+	
+	var svg = figure.select("svg");
+
+	var margin = {top: 20, right: 20, bottom: 40, left: 80},
+    	width = parseInt(svg.attr("width")) - margin.left - margin.right,
+    	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
+    	
+    var x = scaleFor(format[0])
+    	.range([0, width]);
+
+	var y = scaleFor(format[1])
+    	.range([height, 0]);
+    	
+	var xAxis = d3.svg.axis()
+    	.scale(x)
+    	.orient("bottom")
+    	.tickSize(height);
+
+	var yAxis = d3.svg.axis()
+    	.scale(y)
+    	.orient("left")
+    	.tickSize(width);
+    	
+	var line = d3.svg.line()
+		.interpolate(interpolate)
+    	.x(function(d) { return x(d[category]); })
+    	.y(function(d) { return y(d[value]); });
+    	
+	x.domain(d3.extent(data, function(d) { return d[category]; }));
+  	y.domain(d3.extent(data, function(d) { return d[value]; }));
+
+    var chart = svg.append("g")
+    	.attr("class", "chart")
+       	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");  	
+
+	chart.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + 0 + ")")
+		.call(xAxis);
+
+	chart.append("g")
+		.attr("class", "y axis")
+		.attr("transform", "translate(" + width + ", 0)")
+		.call(yAxis);
+
+  	chart.append("path")
+		.datum(data)
+		.attr("class", "line")
+		.style("stroke", function(d) { return color(d[category]); })
+		.attr("d", line);
+		
+	chart.selectAll(".dot")    
+        .data(data)         
+    	.enter().append("circle")                               
+        	.attr("class", "dot")
+        	.attr("r", 5)       
+        	.attr("cx", function(d) { return x(d[category]); })       
+        	.attr("cy", function(d) { return y(d[value]); })
+        	.attr("opacity", 0.0);
+		
+	if(touch_device) {
+       	d3.selectAll(".dot")
+       		.on("touchstart", showTooltip);
+	} else {
+   		d3.selectAll(".dot")	
+   			.on("mouseover", showTooltip)
+   			.on("mousemove", moveTooltip)
+   			.on("mouseout", hideTooltip);
+   	}
+   	if(debug) { console.log("END RENDER LINE") }; 
+}
+
+function renderBar(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
+	if(debug) { console.log("START RENDER BAR") };
+	
+	var color = colorScale(color);
+	
+	var svg = figure.select("svg");
+
+	var margin = {top: 20, right: 20, bottom: 40, left: 80},
+    	width = parseInt(svg.attr("width")) - margin.left - margin.right,
+    	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
+    	    	
+	var x = scaleFor(format[0])
+    	.rangeRoundBands([0, width], .1);
+
+	var y = scaleFor(format[1])
+    	.range([height, 0]);
+
+	var xAxis = d3.svg.axis()
+    	.scale(x)
+    	.orient("bottom");
+
+	var yAxis = d3.svg.axis()
+    	.scale(y)
+    	.orient("left")
+    	.tickSize(width);
+    	
+    x.domain(data.map(function(d) { return d[category]; }));
+  	y.domain([0, d3.max(data, function(d) { return d[value]; })]);
+       
+    var chart = svg.append("g")
+    	.attr("class", "chart")
+       	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");  	
+
+	chart.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + height + ")")
+		.call(xAxis);
+
+	chart.append("g")
+		.attr("class", "y axis")
+		.attr("transform", "translate(" + width + ", 0)")
+		.call(yAxis);
+      	
+	chart.selectAll(".bar")
+		.data(data)
+		.enter().append("rect")
+      		.attr("class", "bar")
+      		.attr("x", function(d) { return x(d[category]); })
+      		.attr("width", x.rangeBand())
+      		.attr("y", function(d) { return y(d[value]); })
+      		.attr("height", function(d) { return height - y(d[value]); })
+      		.style("fill", function(d) { return color(d[category]); })
+      		.style("opacity", defaultOpacity);
+     
+    function startAnimation() {
+     	if(animate[0] != "none") {
+     		duration = +animate[0];
+     		ease = animate[1] != null ? animate[1] : "linear";
+     		if(debug) console.log("Starting animation, figure: " + figure.attr("id") + ", duration: " + duration + ", ease: " + ease);
+
+     		chart.selectAll(".bar")
+     			.attr("y", y(0))
+     			.attr("height", 0)
+    			.transition()
+    				.ease(ease)
+    				.delay(function(d, i) { return duration/2 + i * duration; })
+    				.duration(duration)
+    				.attr("y", function(d) { return y(d[value]); })
+     				.attr("height", function(d) { return height - y(d[value]); });
+     	}
+	}
+    
+     		
+	if(touch_device) {
+       	d3.selectAll(".bar")
+       		.on("touchstart", showTooltip);
+       		
+		figure.selectAll("svg")
+			.on("touchstart", startAnimation);
+			
+	} else {
+   		d3.selectAll(".bar")	
+   			.on("mouseover", showTooltip)
+   			.on("mousemove", moveTooltip)
+   			.on("mouseout", hideTooltip);	
+   			
+		figure.selectAll("svg")
+			.on("mousedown", startAnimation);      		
+   	}
+   	
+   	if(debug) { console.log("END RENDER BAR") };
+
+} 
+
+function renderBarHorizontal(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
+	if(debug) { console.log("START RENDER BAR HORIZONTAL") };
+	
+	var color = colorScale(color);
+	
+	data = data.reverse();
+	
+	var svg = figure.select("svg");
+
+	var margin = {top: 20, right: 20, bottom: 40, left: 80},
+    	width = parseInt(svg.attr("width")) - margin.left - margin.right,
+    	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
+
+	var x = scaleFor(format[1])
+    	.range([width, 0]);
+
+	var y = scaleFor(format[0])
+    	.rangeRoundBands([0, height], .1);
+    	
+	var xAxis = d3.svg.axis()
+    	.scale(x)
+    	.orient("bottom")
+    	.tickSize(height);
+
+	var yAxis = d3.svg.axis()
+    	.scale(y)
+    	.orient("left");
+    	
+    y.domain(data.map(function(d) { return d[category]; }));
+  	x.domain([d3.max(data, function(d) { return d[value]; }), 0]);
+       
+    var chart = svg.append("g")
+    	.attr("class", "chart")
+       	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");  	
+
+	chart.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + 0 + ")")
+		.call(xAxis);
+
+	chart.append("g")
+		.attr("class", "y axis")
+		.call(yAxis);
+      	
+	chart.selectAll(".bar")
+		.data(data)
+		.enter().append("rect")
+      		.attr("class", "bar")
+      		.attr("x", 0)
+      		.attr("y", function(d) { return y(d[category]); })
+      		.attr("height", y.rangeBand())
+      		.attr("width", function(d) { return x(d[value]); })
+      		.style("fill", function(d) { return color(d[category]); })
+      		.style("opacity", defaultOpacity);
+
+    function startAnimation() {
+     	if(animate[0] != "none") {
+     		duration = +animate[0];
+     		ease = animate[1] != null ? animate[1] : "linear";
+     		if(debug) console.log("Starting animation, figure: " + figure.attr("id") + ", duration: " + duration + ", ease: " + ease);
+
+			var bars = chart.selectAll(".bar");
+			bars
+     			.attr("width", 0)
+    			.transition()
+    				.ease(ease)
+    				.delay(function(d, i) { return duration/2 + (bars[0].length-i) * duration; })
+    				.duration(duration)
+    				.attr("width", function(d) { return x(d[value]); });
+     	}
+	}
+	      		
+	if(touch_device) {
+       	d3.selectAll(".bar")
+       		.on("touchstart", showTooltip);
+       		
+		figure.selectAll("svg")
+			.on("touchstart", startAnimation);
+			
+	} else {
+   		d3.selectAll(".bar")	
+   			.on("mouseover", showTooltip)
+   			.on("mousemove", moveTooltip)
+   			.on("mouseout", hideTooltip);	
+   			
+		figure.selectAll("svg")
+			.on("mousedown", startAnimation);      		
+   	}
+   	
+	if(debug) { console.log("END RENDER BAR HORIZONTAL") };
+}
+
+function renderPie(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
+	if(debug) { console.log("START RENDER PIE") }; 
+	
+	var color = colorScale(color);
+	
+	var svg = figure.select("svg");
+		
+	var margin = {top: 0, right: 20, bottom: 0, left: 0},
+    	width = parseInt(svg.attr("width")) - margin.left - margin.right,
+    	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
+    	
+	var radius = Math.min(width, height) / 2;
+	
+	var arc = d3.svg.arc()
+    	.outerRadius(radius - 10)
+    	.innerRadius(0);
+    	
+    var pie = d3.layout.pie()
+    	.sort(null)
+    	.value(function(d) { return d[value]; });
+    	
+    var chart = svg.append("g")
+    	.attr("class", "chart")
+		.attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+    	
+	var g = chart.selectAll(".arc")
+		.data(pie(data))
+    		.enter().append("g")
+      		.attr("class", "arc")
+      		.style("opacity", defaultOpacity);
+
+  	g.append("path")
+		.attr("d", arc)
+		.style("fill", function(d) { return color(d.data[category]); });
+
+	g.append("text")
+		.attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+		.attr("dy", ".35em")
+		.style("text-anchor", "middle")
+		.text(function(d) { return d.data[category]; });
+		
+	if(touch_device) {
+       	d3.selectAll(".arc")
+       		.on("touchstart", showTooltip);   		  	
+	} else {
+   		d3.selectAll(".arc")	
+   			.on("mouseover", showTooltip)
+   			.on("mousemove", moveTooltip)
+   			.on("mouseout", hideTooltip);	
+   	}
+   	
+   	if(debug) { console.log("END RENDER PIE") }; 
+} 
+
+function renderDonut(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
+	if(debug) { console.log("START RENDER DONUT") }; 
+	
+	var color = colorScale(color);
+	
+	var svg = figure.select("svg");
+		
+	var margin = {top: 0, right: 20, bottom: 0, left: 0},
+    	width = parseInt(svg.attr("width")) - margin.left - margin.right,
+    	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
+    	
+	var radius = Math.min(width, height) / 2;
+	
+	var arc = d3.svg.arc()
+    	.outerRadius(radius - 5)
+    	.innerRadius((radius-5) * .6);
+    	
+    var pie = d3.layout.pie()
+    	.sort(null)
+    	.value(function(d) { return d[value]; });
+    	
+    var chart = svg.append("g")
+    	.attr("class", "chart")
+		.attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+    	
+	var g = chart.selectAll(".arc")
+		.data(pie(data))
+    		.enter().append("g")
+      		.attr("class", "arc")
+      		.style("opacity", defaultOpacity);
+
+  	g.append("path")
+		.attr("d", arc)
+		.style("fill", function(d) { return color(d.data[category]); });
+
+	g.append("text")
+		.attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+		.attr("dy", ".35em")
+		.style("text-anchor", "middle")
+		.text(function(d) { return d.data[category]; });
+		
+	if(touch_device) {
+       	d3.selectAll(".arc")
+       		.on("touchstart", showTooltip);   		  	
+	} else {
+   		d3.selectAll(".arc")	
+   			.on("mouseover", showTooltip)
+   			.on("mousemove", moveTooltip)
+   			.on("mouseout", hideTooltip);	
+   	}
+   	
+   	if(debug) { console.log("END RENDER DONUT") }; 
+} 
 
 function renderTable(id, csv, title, debug) {
 	var debug = (debug.toLowerCase() == "true");
-	if(debug) { console.log("---------- START RENDER TABLE ----------"
+	if(debug) { console.log("START RENDER TABLE"
 								+ "\n\tid: " + id 
 								+ "\n\tcsv: " + csv
 								+ "\n\ttitle: " + title
@@ -195,7 +602,7 @@ function renderTable(id, csv, title, debug) {
 	var div = d3.select(csv),
 			  data = d3.csv.parse(div.text());
 	
-	if(debug) { console.log("LOADING DATA ASYNC (" + csv + ")"); console.log(data); }
+	if(debug) { console.log("Loading data async (" + csv + ")"); console.log(data); }
 		
 	var columns = d3.keys(data[0]);
 	
@@ -232,263 +639,6 @@ function renderTable(id, csv, title, debug) {
             .text(function(d) { return d.value; });
             
     if(debug) { console.log("END RENDER TABLE"); }
-}
-
-function renderBar(svg, width, height, data, category, value, formats, colors, debug) {
-	if(debug) { console.log("START RENDER BAR") };
-	
-	var color = d3.scale.ordinal().range(colors);
-	
-	var margin = {top: 20, right: 20, bottom: 40, left: 80},
-    	width = width - margin.left - margin.right,
-    	height = height - margin.top - margin.bottom;
-    	
-	var x = scaleFor(formats[0])
-    	.rangeRoundBands([0, width], .1);
-
-	var y = scaleFor(formats[1])
-    	.range([height, 0]);
-
-	var xAxis = d3.svg.axis()
-    	.scale(x)
-    	.orient("bottom");
-
-	var yAxis = d3.svg.axis()
-    	.scale(y)
-    	.orient("left")
-    	.tickSize(width);
-    	
-    x.domain(data.map(function(d) { return d[category]; }));
-  	y.domain([0, d3.max(data, function(d) { return d[value]; })]);
-
-	svg.attr("width", width + margin.left + margin.right)
-       .attr("height", height + margin.top + margin.bottom);
-       
-    var chart = svg.append("g")
-    	.attr("class", "chart")
-       	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");  	
-
-	chart.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + height + ")")
-		.call(xAxis);
-
-	chart.append("g")
-		.attr("class", "y axis")
-		.attr("transform", "translate(" + width + ", 0)")
-		.call(yAxis);
-      	
-	chart.selectAll(".bar")
-		.data(data)
-		.enter().append("rect")
-      		.attr("class", "bar")
-      		.attr("x", function(d) { return x(d[category]); })
-      		.attr("width", x.rangeBand())
-      		.attr("y", function(d) { return y(d[value]); })
-      		.attr("height", function(d) { return height - y(d[value]); })
-      		.style("fill", function(d) { return colors(d[category]); })
-      		.style("opacity", defaultOpacity);
-      		
-	if(touch_device) {
-       	d3.selectAll(".bar")
-       		.on("touchstart", showTooltip);
-	} else {
-   		d3.selectAll(".bar")	
-   			.on("mouseover", showTooltip)
-   			.on("mousemove", moveTooltip)
-   			.on("mouseout", hideTooltip);	
-   	}
-   	
-   	if(debug) { console.log("END RENDER BAR") };
-
-} 
-
-function renderBarHorizontal(svg, width, height, data, category, value, formats, colors, debug) {
-	if(debug) { console.log("START RENDER BAR HORIZONTAL") };
-	
-	var color = d3.scale.ordinal().range(colors);
-	
-	var margin = {top: 20, right: 20, bottom: 40, left: 80},
-    	width = width - margin.left - margin.right,
-    	height = height - margin.top - margin.bottom;
-
-	var x = scaleFor(formats[1])
-    	.range([width, 0]);
-
-	var y = scaleFor(formats[0])
-    	.rangeRoundBands([0, height], .1);
-    	
-	var xAxis = d3.svg.axis()
-    	.scale(x)
-    	.orient("bottom")
-    	.tickSize(height);
-
-	var yAxis = d3.svg.axis()
-    	.scale(y)
-    	.orient("left");
-    	
-    y.domain(data.map(function(d) { return d[category]; }));
-  	x.domain([d3.max(data, function(d) { return d[value]; }), 0]);
-
-	svg.attr("width", width + margin.left + margin.right)
-       .attr("height", height + margin.top + margin.bottom);
-       
-    var chart = svg.append("g")
-    	.attr("class", "chart")
-       	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");  	
-
-	chart.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + 0 + ")")
-		.call(xAxis);
-
-	chart.append("g")
-		.attr("class", "y axis")
-		.call(yAxis);
-      	
-	chart.selectAll(".bar")
-		.data(data)
-		.enter().append("rect")
-      		.attr("class", "bar")
-      		.attr("x", 0)
-      		.attr("y", function(d) { return y(d[category]); })
-      		.attr("height", y.rangeBand())
-      		.attr("width", function(d) { return x(d[value]); })
-      		.style("fill", function(d) { return colors(d[category]); })
-      		.style("opacity", defaultOpacity);
-      		
-	if(touch_device) {
-       	d3.selectAll(".bar")
-       		.on("touchstart", showTooltip);
-	} else {
-   		d3.selectAll(".bar")	
-   			.on("mouseover", showTooltip)
-   			.on("mousemove", moveTooltip)
-   			.on("mouseout", hideTooltip);	
-   	}
-	if(debug) { console.log("END RENDER BAR HORIZONTAL") };
-}    	   	
-    	
-function renderPie(svg, width, height, data, category, value, formats, colors, debug) {
-	if(debug) { console.log("START RENDER PIE") }; 
-	
-	var radius = Math.min(width, height) / 2;
-		
-	var color = d3.scale.ordinal().range(colors);
-	
-	var arc = d3.svg.arc()
-    	.outerRadius(radius - 10)
-    	.innerRadius(0);
-    	
-    var pie = d3.layout.pie()
-    	.sort(null)
-    	.value(function(d) { return d[value]; });
-    	
-    var chart = svg.append("g")
-    	.attr("class", "chart")
-		.attr("transform", "translate(" + width/2 + "," + height/2 + ")");
-    	
-	var g = chart.selectAll(".arc")
-		.data(pie(data))
-    		.enter().append("g")
-      		.attr("class", "arc")
-      		.style("opacity", defaultOpacity);
-
-  	g.append("path")
-		.attr("d", arc)
-		.style("fill", function(d) { return colors(d.data[category]); });
-
-	g.append("text")
-		.attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-		.attr("dy", ".35em")
-		.style("text-anchor", "middle")
-		.text(function(d) { return d.data[category]; });
-		
-	if(touch_device) {
-       	d3.selectAll(".arc")
-       		.on("touchstart", showTooltip);   		  	
-	} else {
-   		d3.selectAll(".arc")	
-   			.on("mouseover", showTooltip)
-   			.on("mousemove", moveTooltip)
-   			.on("mouseout", hideTooltip);	
-   	}
-   	
-   	if(debug) { console.log("END RENDER PIE") }; 
- }
- 
-function renderLine(svg, width, height, data, category, value, formats, colors, debug) {
-	if(debug) { console.log("START RENDER LINE"); }
-	
-	var margin = {top: 20, right: 20, bottom: 40, left: 80},
-    	width = width - margin.left - margin.right,
-    	height = height - margin.top - margin.bottom;
-    	
-    var x = scaleFor(formats[0])
-    	.range([0, width]);
-
-	var y = scaleFor(formats[1])
-    	.range([height, 0]);
-    	
-	var xAxis = d3.svg.axis()
-    	.scale(x)
-    	.orient("bottom")
-    	.tickSize(height);
-
-	var yAxis = d3.svg.axis()
-    	.scale(y)
-    	.orient("left")
-    	.tickSize(width);;
-    	
-	var line = d3.svg.line()
-    	.x(function(d) { return x(d[category]); })
-    	.y(function(d) { return y(d[value]); });
-    	
-	x.domain(d3.extent(data, function(d) { return d[category]; }));
-  	y.domain(d3.extent(data, function(d) { return d[value]; }));
-  	
-	svg.attr("width", width + margin.left + margin.right)
-       .attr("height", height + margin.top + margin.bottom);
-       
-    var chart = svg.append("g")
-    	.attr("class", "chart")
-       	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");  	
-
-	chart.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + 0 + ")")
-		.call(xAxis);
-
-	chart.append("g")
-		.attr("class", "y axis")
-		.attr("transform", "translate(" + width + ", 0)")
-		.call(yAxis);
-
-  	chart.append("path")
-		.datum(data)
-		.attr("class", "line")
-		.style("stroke", function(d) { return colors(d[category]); })
-		.attr("d", line);
-		
-	chart.selectAll(".dot")    
-        .data(data)         
-    	.enter().append("circle")                               
-        	.attr("class", "dot")
-        	.attr("r", 5)       
-        	.attr("cx", function(d) { return x(d[category]); })       
-        	.attr("cy", function(d) { return y(d[value]); })
-        	.attr("opacity", 0.0);
-		
-	if(touch_device) {
-       	d3.selectAll(".dot")
-       		.on("touchstart", showTooltip);
-	} else {
-   		d3.selectAll(".dot")	
-   			.on("mouseover", showTooltip)
-   			.on("mousemove", moveTooltip)
-   			.on("mouseout", hideTooltip);
-   	}
-   	if(debug) { console.log("END RENDER LINE") }; 
 }
 	
 function showTooltip(d) {
@@ -564,6 +714,10 @@ function hideTooltip(d) {
        	.duration(200)
        	.style("opacity", defaultOpacity);
        	
+    d3.selectAll(".serie").transition()
+       	.duration(200)
+       	.style("opacity", defaultOpacity);
+       	
 	d3.selectAll(".dot").transition()
        	.duration(200)
        	.style("opacity", 0.0);
@@ -575,4 +729,3 @@ function hideTooltip(d) {
     d3.event.stopPropagation();
     d3.event.preventDefault();
 };
-  			
