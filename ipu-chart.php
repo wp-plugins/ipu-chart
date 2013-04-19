@@ -10,6 +10,7 @@
 	Domain Path: /lang
  */
 
+// Helper to display plugin version in console logs
 function plugin_get_version() {
 	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	$plugin_data = get_plugin_data( __FILE__ );
