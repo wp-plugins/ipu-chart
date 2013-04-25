@@ -3,7 +3,7 @@ Contributors: thmufl
 Tags: chart, diagram, svg, csv, excel, numbers, bar chart, pie chart, line chart, donut chart, animation, quotes
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.3.1
+Stable tag: 0.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
