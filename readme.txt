@@ -3,7 +3,7 @@ Contributors: thmufl
 Tags: chart, diagram, svg, csv, excel, numbers, bar chart, pie chart, line chart, donut chart, animation, quotes
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.3.1
+Stable tag: 0.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,12 +42,25 @@ Brazil,205.72[/csv]
 Second, define the chart. Reference the csv (don't forget the '#'). Set the chart type and the category and value column. Define the format (string, integer, float or date) of the category and value columns:
 
 <pre>
-[chart csv='#data' type='bar' category='Country' value='Population' format='string, float' title='Top five most populous countries of the world...' description='The top five most populous countries of the world...' animate='medium']
+[chart csv='#data' 
+       type='bar' 
+       category='Country'
+       value='Population' 
+       format='string, float'
+       title='Top five most populous countries of the world...' 
+       description='The top five most populous countries of the world...'
+       animate='medium']
 </pre>
 
 = Examples =
 
-Some examples for the different chart types follow.
+Some examples for the different chart types (that you can copy and paste as is in your own example pages).
+
+Bar chart
+
+<pre>
+[chart csv='#data' type='bar' category='Country' value='Population' format='string, float' title='Top five most populous countries of the world...' description='The top five most populous countries of the world...' animate='medium']
+</pre>
 
 Horizontal bar chart:
 
@@ -71,6 +84,7 @@ Line chart:
 
 For a line charts you need some data with <code>integer</code>, <code>float</code> or <code>date</code> values as category:
 
+<pre>
 [csv id='aapl']Date,Open,High,Low,Close,Volume,Adj Close
 2013-04-01,441.90,443.70,426.40,429.79,16407200,429.79
 2013-03-25,464.69,469.95,441.62,442.66,14002700,442.66
@@ -81,6 +95,7 @@ For a line charts you need some data with <code>integer</code>, <code>float</cod
 2013-02-19,461.10,462.73,442.82,450.81,15088600,450.81
 2013-02-11,476.50,484.94,459.92,460.16,16776900,460.16
 2013-02-04,453.91,478.81,442.00,474.98,21299300,474.98[/csv]
+</pre>
 
 To display the close prize as a line chart:
 
@@ -118,9 +133,9 @@ Please visit our [IPU-Chart Support Forum](https://www.ipublia.com/support/forum
 
 = Further Reading =
 
-* The [IPU-Chart for WordPress User Guide](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/ "IPU-Chart User Guide").
-* The [IPU-Chart Support Forum](https://www.ipublia.com/support/forums/ "IPU-Chart Support Forum").
-* The [IPU-Chart Product Page](https://www.ipublia.com/products/ipu-chart-svg-chart-library/ "IPU-Chart Product Page").
+* The IPU-Chart for WordPress [User Guide](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/ "IPU-Chart User Guide").
+* The IPU-Chart [Support Forum](https://www.ipublia.com/support/forums/ "IPU-Chart Support Forum").
+* The IPU-Chart [Product Page](https://www.ipublia.com/products/ipu-chart-svg-chart-library/ "IPU-Chart Product Page").
 
 Enjoy!
 
