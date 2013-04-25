@@ -59,8 +59,10 @@ figure.chart {
 
 .x.label {
 	fill: dimGray;
-	font-weight: bold;
-}	
+	stroke: dimGray;
+	stroke-opacity: 1.0;
+	stroke-width: 0.1;
+}
 
 .y.axis {
 }
@@ -82,7 +84,9 @@ figure.chart {
 
 .y.label {
 	fill: dimGray;
-	font-weight: bold;
+	stroke: dimGray;
+	stroke-opacity: 1.0;
+	stroke-width: 0.1;
 }
 
 /* Tooltip definitions */

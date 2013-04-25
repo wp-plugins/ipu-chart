@@ -263,12 +263,26 @@ function renderLine(figure, data, category, value, format, color, sort, interpol
 	chart.append("g")
 		.attr("class", "x axis")
 		.attr("transform", "translate(0," + 0 + ")")
-		.call(xAxis);
+		.call(xAxis)
+			.append("text")
+				.attr("class", "x label")
+				.attr("x", width)
+      			.attr("dx", "-.21em")
+      			.attr("dy", "-.21em")
+      			.style("text-anchor", "end")
+      			.text(category);
 
 	chart.append("g")
 		.attr("class", "y axis")
 		.attr("transform", "translate(" + width + ", 0)")
-		.call(yAxis);
+		.call(yAxis)
+			.append("text")
+				.attr("class", "y label")
+      			.attr("transform", "rotate(-90)")
+      			.attr("dx", "-.21em")
+      			.attr("dy", ".91em")
+      			.style("text-anchor", "end")
+      			.text(value);
 
   	chart.append("path")
 		.datum(data)
@@ -333,12 +347,27 @@ function renderBar(figure, data, category, value, format, color, sort, interpola
 	chart.append("g")
 		.attr("class", "x axis")
 		.attr("transform", "translate(0," + height + ")")
-		.call(xAxis);
+		.call(xAxis)
+			.append("text")
+				.attr("class", "x label")
+				.attr("x", width)
+      			.attr("dx", "-.21em")
+      			.attr("y", -height)
+      			.attr("dy", "-.21em")
+      			.style("text-anchor", "end")
+      			.text(category);
 
 	chart.append("g")
 		.attr("class", "y axis")
 		.attr("transform", "translate(" + width + ", 0)")
-		.call(yAxis);
+		.call(yAxis)
+			.append("text")
+				.attr("class", "y label")
+      			.attr("transform", "rotate(-90)")
+      			.attr("dx", "-.21em")
+      			.attr("dy", ".91em")
+      			.style("text-anchor", "end")
+      			.text(value);
       	
 	chart.selectAll(".bar")
 		.data(data)
@@ -428,12 +457,27 @@ function renderBarHorizontal(figure, data, category, value, format, color, sort,
 
 	chart.append("g")
 		.attr("class", "x axis")
-		.attr("transform", "translate(0," + 0 + ")")
-		.call(xAxis);
+		.attr("transform", "translate(0,0)")
+		.call(xAxis)
+			.append("text")
+				.attr("class", "x label")
+				.attr("x", width)
+      			.attr("dx", "-.21em")
+      			.attr("dy", "-.21em")
+      			.style("text-anchor", "end")
+      			.text(value);
 
 	chart.append("g")
 		.attr("class", "y axis")
-		.call(yAxis);
+		.call(yAxis)
+			.append("text")
+				.attr("class", "y label")
+				.attr("y", width)
+      			.attr("transform", "rotate(-90)")
+      			.attr("dx", "-.21em")
+      			.attr("dy", ".91em")
+      			.style("text-anchor", "end")
+      			.text(category);
       	
 	chart.selectAll(".bar")
 		.data(data)

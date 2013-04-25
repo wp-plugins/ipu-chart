@@ -4,7 +4,7 @@
 	Plugin URI: https://www.ipublia.com/ipu-chart
 	Description: Creates SVG based charts out of your CSV data. Currently supports bar, pie, donut and line charts.
 	Author: ipublia, Thomas Müller Flury
-	Version: 0.3
+	Version: 0.3.1
 	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuchart
 	Domain Path: /lang
@@ -41,7 +41,7 @@ function ipu_chart_func($atts) {
 		'category' => 'name',
 		'value' => 'value',
 		'format' => '%s,%f',
-		'color' => 'SlateBlue',
+		'color' => 'auto',
 		'style' => 'width:100%;height:300px;',
 		'title' => 'Set a title',
 		'description' => 'Set a description',
