@@ -45,7 +45,9 @@ Second, define the chart. Reference the csv (don't forget the '#'). Set the char
 [chart csv='#data' type='bar' category='Country' value='Population' format='string, float' title='Top five most populous countries of the world...' description='The top five most populous countries of the world...' animate='medium']
 </pre>
 
-= Usage Examples =
+= Examples =
+
+Some examples for the different chart types follow.
 
 Horizontal bar chart:
 
