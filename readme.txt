@@ -52,7 +52,7 @@ Second, define the chart. Reference the csv (don't forget the '#'). Set the char
        animate='medium']
 </pre>
 
-= Examples =
+= Usage Examples =
 
 Some examples for the different chart types (that you can copy and paste as is in your own example pages).
 
