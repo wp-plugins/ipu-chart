@@ -52,7 +52,7 @@ Second, define the chart. Reference the csv (don't forget the '#'). Set the char
        animate='medium']
 </pre>
 
-= Examples =
+= Usage Examples =
 
 Some examples for the different chart types (that you can copy and paste as is in your own example pages).
 
@@ -127,9 +127,9 @@ To define a table view just reference the csv with a 'table' shortcode (don't fo
 [table csv='#data']
 </pre>
 
-The <code>chart</code> shortcode has more attributes than shown here. Please refer to our [IPU-Chart User Guide](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/ "IPU-Chart User Guide").
+The <code>chart</code> shortcode has more attributes than shown here. Please refer to our [User Guide](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/ "IPU-Chart User Guide").
 
-Please visit our [IPU-Chart Support Forum](https://www.ipublia.com/support/forums/ "IPU-Chart Support Forum") for questions about the plugin or if you encounter a problem with it.
+Please visit our [Support Forum](https://www.ipublia.com/support/forums/ "IPU-Chart Support Forum") for questions about the plugin or if you encounter a problem with it.
 
 = Further Reading =
 
@@ -182,8 +182,11 @@ For questions or issues with IPU-Chart please use this support channels:
 * Enhanced error handling when loading csv data
 
 = 0.3.1 =
-* Labels for x- and y-axis added.
-* Some bugs fixes.
+* Labels for x- and y-axis added
+* Some bugs fixes
+
+= 0.3.3 =
+* Bug fixes documentation
 
 == Upgrade Notice ==
 
@@ -195,4 +198,8 @@ This version adds support for donut charts. Line chars can be interpolated. Bar 
 
 = 0.3.1 =
 This version adds labels for x- and y-axis and some bug fixes.
+
+= 0.3.3 =
+This version adds bug fixes in the documentation.
+
 
