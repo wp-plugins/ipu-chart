@@ -1,26 +1,27 @@
 === Plugin Name ===
 Contributors: thmufl
-Tags: chart, diagram, svg, csv, excel, numbers, bar chart, pie chart, line chart, donut chart, animation, quotes
+Tags: chart, diagram, svg, csv, excel, numbers, bar chart, pie chart, line chart, donut chart, scatter chart, animation, quotes
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.3.3
+Stable tag: 0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates SVG based, animated bar, pie, donut and line charts out of your CSV data. A powerful, easy to use shortcode.
+Creates SVG based, animated bar, pie, donut, line and scatter charts out of your CSV data. A powerful, easy to use shortcode.
 
 == Description ==
 
-IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut and line charts out of your CSV data.
+IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line and scatter charts out of your CSV data.
 
 The plugin takes a csv file (Texteditor, Excel, Numbers etc.) and displays it as a chart. IPU-Chart is based on [SVG](http://www.w3.org/TR/SVG/) and [D3](http://d3js.org/). It works perfectly on large computer screens as well as on tablets and smaller mobile screens. For browsers that do not support SVG an alternative image can be set.
 
 = Features =
 
-* Create bar, pie, donut and line charts
+* Create bar, pie, donut, line and scatter charts
 * Enter the csv data directy in you blog or page
 * Or load the csv data from a remote location
 * Create multiple views of the csv data
+* Load csv data from a remote location
 * Tooltip for chart details (see screenshots)
 * Animated bar charts
 * Define colors and number formats of the chart
@@ -56,31 +57,31 @@ Second, define the chart. Reference the csv (don't forget the '#'). Set the char
 
 Some examples for the different chart types (that you can copy and paste as is in your own example pages).
 
-Bar chart
+<b>Bar Chart</b>
 
 <pre>
 [chart csv='#data' type='bar' category='Country' value='Population' format='string, float' title='Top five most populous countries of the world...' description='The top five most populous countries of the world...' animate='medium']
 </pre>
 
-Horizontal bar chart:
+<b>Horizontal Bar Chart</b>
 
 <pre>
 [chart csv='#data' type='bar.horizontal' category='Country' value='Population' format='string, float' title='Top five most populous countries of the world...' description='The top five most populous countries of the world...' animate='medium']
 </pre>
 
-Pie chart:
+<b>Pie Chart</b>
 
 <pre>
 [chart csv='#data' type='pie' category='Country' value='Population' format='string, float' title='Top five most populous countries of the world...' description='The top five most populous countries of the world...' animate='medium']
 </pre>
 
-Donut chart:
+<b>Donut Chart</b>
 
 <pre>
 [chart csv='#data' type='donut' category='Country' value='Population' format='string, float' title='Top five most populous countries of the world...' description='The top five most populous countries of the world...' animate='medium' debug='true']
 </pre>
 
-Line chart:
+<b>Line Chart</b>
 
 For a line charts you need some data with <code>integer</code>, <code>float</code> or <code>date</code> values as category:
 
@@ -115,21 +116,43 @@ The same for Apple would be:
 [chart csv='https://www.ipublia.com/wp-content/uploads/AAPL.csv' type='line' category='Date' value='Close' format='yyyy-mm-dd, float' title='Apple close prize...' description='Apple close prize...' color="SlateBlue"]
 </pre>
 
-If you want smooth lines use the <code>interplolate</code> attribute:
+<b>Scatter Chart</b>
+
+A scatter chart (or 'plot') displays the correlation between two data sets (if there exists one). Below an example of a scatter chart that shows the correlation between <em>temperature and ice cream sales</em>:
 
 <pre>
-[chart csv='https://www.ipublia.com/wp-content/uploads/Weather-ZH.csv' type='line' category='Date' value='Temperature' format='yyyy-mm-dd, float' title='Average temperature in Zürich in degree celsius...' description='Average temperature in Zürich in degree celsius...' color="DarkOrange" interpolate="cardinal"]
+[csv id='icecreamsales']Period,Temperature (Celsius),Sales ($)
+Day 1-12,14.2,215
+Day 1-12,16.4,325
+Day 1-12,11.9,185
+Day 1-12,15.2,332
+Day 1-12,18.5,406
+Day 1-12,22.1,522
+Day 1-12,19.4,412
+Day 1-12,25.1,614
+Day 1-12,23.4,544
+Day 1-12,18.1,421
+Day 1-12,22.6,445
+Day 1-12,17.2,408[/csv]
 </pre>
+
+Out of this raw data we can create a scatter chart that shows the correlation between the two data sets:
+
+<pre>
+[chart csv='#icecreamsales' type='scatter' category='Period' value='Temperature (Celsius), Sales ($)' format='string, float, integer' color="Crimson" title='Ice Cream Sales vs Temperature. Source: www.mathsisfun.com' description='Scatter Chart displaying the relationship between Ice Cream Sales and Temperature. Source: www.mathsisfun.com']
+</pre>
+
+<b>Table View</b>
 
 To define a table view just reference the csv with a 'table' shortcode (don't forget the '#'). Example:
 
 <pre>
-[table csv='#data']
+[table csv='#icecreamsales' title='Ice Cream Sales vs Temperature. Source: www.mathsisfun.com']
 </pre>
 
-The <code>chart</code> shortcode has more attributes than shown here. Please refer to our [User Guide](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/ "IPU-Chart User Guide").
+The <code>chart</code> shortcode has many more attributes than shown here. Please refer to our [User Guide](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/ "IPU-Chart User Guide").
 
-Please visit our [Support Forum](https://www.ipublia.com/support/forums/ "IPU-Chart Support Forum") for questions about the plugin or if you encounter a problem with it.
+Visit our [Support Forum](https://www.ipublia.com/support/forums/ "IPU-Chart Support Forum") for questions or suggestions.
 
 = Further Reading =
 
@@ -154,12 +177,14 @@ For questions or issues with IPU-Chart please use this support channels:
 
 == Screenshots ==
 
-1. Bar chart example (with a tooltip)
-2. Horizontal bar chart example
-3. Pie Chart example
-4. Donut Chart example
-5. Line chart example
-6. Interpolated line chart example
+1. Bar chart (with a tooltip)
+2. Horizontal bar chart
+3. Pie Chart
+4. Donut Chart
+5. Line chart
+6. Interpolated line chart
+7. Scatter chart (simple)
+8. Scatter chart (more complex)
 
 == Changelog ==
 
@@ -188,6 +213,11 @@ For questions or issues with IPU-Chart please use this support channels:
 = 0.3.3 =
 * Bug fixes documentation
 
+= 0.4 =
+* Scatter charts added
+* Shortcodes inside [csv][/csv] are processed now
+* Minor bug fixes
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -202,4 +232,7 @@ This version adds labels for x- and y-axis and some bug fixes.
 = 0.3.3 =
 This version adds bug fixes in the documentation.
 
-
+= 0.4 =
+Scatter charts added.
+Shortcodes inside [csv][/csv] are processed now.
+Minor bug fixes.

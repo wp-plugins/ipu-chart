@@ -8,6 +8,12 @@ figure.chart {
   //font: 0.9em sans-serif;
 }
 
+figure .legend {
+	fill: dimGray;
+	stroke: dimGray;
+	stroke-opacity: 1.0;
+	stroke-width: 0.1;
+}
 
 .chart svg {
   //border: 2px solid red;
