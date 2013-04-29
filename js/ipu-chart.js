@@ -217,8 +217,110 @@ function render(figure, data, type, category, value, format, color, sort, interp
 	else if(type.toLowerCase().trim() == "line") 
     	renderLine(figure, data, category, value, format, color, sort, interpolate, animate, debug);
     	
+    else if(type.toLowerCase().trim() == "scatter") 
+    	renderScatter(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+    	
     else if(type.toLowerCase().trim() == "line.multi") 
     	renderLineMulti(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+}
+
+function renderScatter(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
+	if(debug) { console.log("START RENDER SCATTER"); }
+	
+	var color = colorScale(color);
+	
+	var svg = figure.select("svg");
+
+	var margin = {top: 20, right: 20, bottom: 40, left: 80},
+    	width = parseInt(svg.attr("width")) - margin.left - margin.right,
+    	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
+    	
+    var x = scaleFor(format[1])
+    	.range([0, width]);
+
+	var y = scaleFor(format[2])
+    	.range([height, 0]);
+    	
+	var xAxis = d3.svg.axis()
+    	.scale(x)
+    	.orient("bottom")
+    	.tickSize(height);
+
+	var yAxis = d3.svg.axis()
+    	.scale(y)
+    	.orient("left")
+    	.tickSize(width);
+    	
+	x.domain(d3.extent(data, function(d) { return d[value[0]]; })).nice();
+  	y.domain(d3.extent(data, function(d) { return d[value[1]]; })).nice();
+
+    var chart = svg.append("g")
+    	.attr("class", "chart")
+       	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");  	
+
+	chart.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + 0 + ")")
+		.call(xAxis)
+			.append("text")
+				.attr("class", "x label")
+				.attr("x", width)
+      			.attr("dx", "-.21em")
+      			.attr("dy", "-.21em")
+      			.style("text-anchor", "end")
+      			.text(value[0]);
+		
+	chart.append("g")
+		.attr("class", "y axis")
+		.attr("transform", "translate(" + width + ", 0)")
+		.call(yAxis)
+			.append("text")
+				.attr("class", "y label")
+      			.attr("transform", "rotate(-90)")
+      			.attr("dx", "-.21em")
+      			.attr("dy", ".91em")
+      			.style("text-anchor", "end")
+      			.text(value[1]);
+
+	chart.selectAll(".scdot")
+		.data(data)
+			.enter().append("circle")
+				.attr("class", "scdot")
+				.attr("r", 4.5)
+				.attr("cx", function(d) { return x(d[value[0]]); })
+				.attr("cy", function(d) { return y(d[value[1]]); })
+				.style("fill", function(d) { return color(d[category]); });
+				
+	var legend = chart.selectAll(".legend")
+		.data(color.domain())
+			.enter().append("g")
+			.attr("class", "legend")
+		.attr("transform", function(d, i) { return "translate(-12," + (12 + i * 16) + ")"; });
+
+	legend.append("rect")
+		.attr("x", width - 12)
+		.attr("width", 12)
+		.attr("height", 12)
+		.style("stroke", color)
+		.style("fill", color);
+
+	legend.append("text")
+		.attr("x", width - 18)
+		.attr("y", 5)
+		.attr("dy", ".35em")
+		.style("text-anchor", "end")
+		.text(function(d) { return d; });
+		
+	if(touch_device) {
+       	d3.selectAll(".scdot")
+       		.on("touchstart", showTooltip);
+	} else {
+   		d3.selectAll(".scdot")	
+   			.on("mouseover", showTooltip)
+   			.on("mousemove", moveTooltip)
+   			.on("mouseout", hideTooltip);
+   	}
+   	if(debug) { console.log("END RENDER SCATTER") }; 
 }
 
 function renderLine(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
@@ -698,6 +800,10 @@ function showTooltip(d) {
 	d3.selectAll(".dot").transition()
        	.duration(100)
        	.style("opacity", 0.0);
+       	
+    d3.selectAll(".scdot").transition()
+       	.duration(100)
+       	.style("opacity", defaultOpacity);
        				
 	d3.select(this).transition()
 		.duration(200)
@@ -765,6 +871,10 @@ function hideTooltip(d) {
 	d3.selectAll(".dot").transition()
        	.duration(200)
        	.style("opacity", 0.0);
+       	
+	d3.selectAll(".scdot").transition()
+       	.duration(200)
+       	.style("opacity", defaultOpacity);
        	
 	tooltip.transition()
 		.duration(200)
