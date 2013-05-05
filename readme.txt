@@ -106,8 +106,7 @@ For questions or issues with IPU-Chart please use this support channels:
 5. Line chart
 6. Interpolated line chart
 7. Scatter chart (simple)
-8. Scatter chart (more complex)
-9. Line chart with an alternative layout
+8. Line chart with an alternative layout
 
 == Changelog ==
 
