@@ -3,29 +3,33 @@ Contributors: thmufl
 Tags: chart, diagram, svg, csv, excel, numbers, bar chart, pie chart, line chart, donut chart, scatter chart, animation, quotes
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.4
+Stable tag: 0.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates SVG based, animated bar, pie, donut, line and scatter charts out of your CSV data. A powerful, easy to use shortcode.
+Creates SVG based, animated bar, pie, donut, line and scatter charts out of your data. A powerful, easy to use shortcode.
 
 == Description ==
 
-IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line and scatter charts out of your CSV data.
+IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line and scatter charts out of your csv (comma separated) or tsv (tab separated) data.
 
-The plugin takes a csv file (Texteditor, Excel, Numbers etc.) and displays it as a chart. IPU-Chart is based on [SVG](http://www.w3.org/TR/SVG/) and [D3](http://d3js.org/). It works perfectly on large computer screens as well as on tablets and smaller mobile screens. For browsers that do not support SVG an alternative image can be set.
+The plugin allows you to load the data to display as a chart from a remote service that delivers csv or tsv formatted data. You can also export you data from favorite spreadsheet application (Excel, Numbers, Open Office) and display it as a chart in your blog or page.
+
+IPU-Chart is based on [SVG](http://www.w3.org/TR/SVG/) and [D3](http://d3js.org/). It works perfectly on large computer screens as well as on tablets and smaller mobile screens. For browsers that do not support SVG an alternative image can be set.
+
+The styling of all chart types can be done precisely and easily with css. 
 
 = Features =
 
 * Create bar, pie, donut, line and scatter charts
-* Enter the csv data directy in you blog or page
-* Or load the csv data from a remote location
-* Create multiple views of the csv data
-* Load csv data from a remote location
+* Enter the csv/tsv data directy in you blog or page
+* Load the csv/tsv data from a remote location
+* Create multiple views of the data
+* Style the charts with css
 * Tooltip for chart details (see screenshots)
 * Animated bar charts
 * Define colors and number formats of the chart
-* Create an additional table view of the csv data
+* Create an additional table view of the data
 
 = Usage =
 
@@ -40,7 +44,7 @@ Indonesia,248.22
 Brazil,205.72[/csv]
 </pre>
 
-Second, define the chart. Reference the csv (don't forget the '#'). Set the chart type and the category and value column. Define the format (string, integer, float or date) of the category and value columns:
+Second, define the chart. Reference the csv (or tsv). Set the chart type and the category and value column. Define the format (string, integer, float or date) of the category and value columns. Enter a title and a description for the chart:
 
 <pre>
 [chart csv='#data' 
@@ -53,109 +57,27 @@ Second, define the chart. Reference the csv (don't forget the '#'). Set the char
        animate='medium']
 </pre>
 
-= Usage Examples =
-
-Some examples for the different chart types (that you can copy and paste as is in your own example pages).
-
-<b>Bar Chart</b>
+But the data can of course also be requested by url:
 
 <pre>
-[chart csv='#data' type='bar' category='Country' value='Population' format='string, float' title='Top five most populous countries of the world...' description='The top five most populous countries of the world...' animate='medium']
+[chart tsv='https://www.ipublia.com/downloads/sales.txt'
+       type='line'
+       category='Date'
+       value='Sales ($)'
+       format='dd.mm.yy, float'
+       color='green'
+       title='Sales of the week']
 </pre>
 
-<b>Horizontal Bar Chart</b>
+This allows you to load the data from a remote data service and display it easily as a chart.
 
-<pre>
-[chart csv='#data' type='bar.horizontal' category='Country' value='Population' format='string, float' title='Top five most populous countries of the world...' description='The top five most populous countries of the world...' animate='medium']
-</pre>
+Have a look at the [User Guide](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/ "IPU-Chart User Guide") of the plugin. It contains a [Quick Start](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/#quickstart "IPU-Chart Quick Start") section, [code examples](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/#usage "IPU-Chart Code Examples") for every chart type and a detailed description of the attributes and css-styles of the plugin.
 
-<b>Pie Chart</b>
-
-<pre>
-[chart csv='#data' type='pie' category='Country' value='Population' format='string, float' title='Top five most populous countries of the world...' description='The top five most populous countries of the world...' animate='medium']
-</pre>
-
-<b>Donut Chart</b>
-
-<pre>
-[chart csv='#data' type='donut' category='Country' value='Population' format='string, float' title='Top five most populous countries of the world...' description='The top five most populous countries of the world...' animate='medium' debug='true']
-</pre>
-
-<b>Line Chart</b>
-
-For a line charts you need some data with <code>integer</code>, <code>float</code> or <code>date</code> values as category:
-
-<pre>
-[csv id='aapl']Date,Open,High,Low,Close,Volume,Adj Close
-2013-04-01,441.90,443.70,426.40,429.79,16407200,429.79
-2013-03-25,464.69,469.95,441.62,442.66,14002700,442.66
-2013-03-18,441.45,462.10,441.20,461.91,15840700,461.91
-2013-03-11,429.75,444.23,425.14,443.66,16382300,443.66
-2013-03-04,427.80,435.43,419.00,431.72,18152800,431.72
-2013-02-25,453.85,455.12,429.98,430.47,16688500,430.47
-2013-02-19,461.10,462.73,442.82,450.81,15088600,450.81
-2013-02-11,476.50,484.94,459.92,460.16,16776900,460.16
-2013-02-04,453.91,478.81,442.00,474.98,21299300,474.98[/csv]
-</pre>
-
-To display the close prize as a line chart:
-
-<pre>
-[chart csv='#aapl' type='line' category='Date' value='Close' format='yyyy-mm-dd, float' title='Apple close prize...' description='Apple close prize...']
-</pre>
-
-You can also load the csv data remotly. Just enter the url of the csv in the 'csv' attribute:
-
-<pre>
-[chart csv='https://www.ipublia.com/wp-content/uploads/GOOG.csv' type='line' category='Date' value='Close' format='yyyy-mm-dd, float' title='Google close prize...' description='Google close prize...' color="Crimson"]
-</pre>
-
-The same for Apple would be:
-
-<pre>
-[chart csv='https://www.ipublia.com/wp-content/uploads/AAPL.csv' type='line' category='Date' value='Close' format='yyyy-mm-dd, float' title='Apple close prize...' description='Apple close prize...' color="SlateBlue"]
-</pre>
-
-<b>Scatter Chart</b>
-
-A scatter chart (or 'plot') displays the correlation between two data sets (if there exists one). Below an example of a scatter chart that shows the correlation between <em>temperature and ice cream sales</em>:
-
-<pre>
-[csv id='icecreamsales']Period,Temperature (Celsius),Sales ($)
-Day 1-12,14.2,215
-Day 1-12,16.4,325
-Day 1-12,11.9,185
-Day 1-12,15.2,332
-Day 1-12,18.5,406
-Day 1-12,22.1,522
-Day 1-12,19.4,412
-Day 1-12,25.1,614
-Day 1-12,23.4,544
-Day 1-12,18.1,421
-Day 1-12,22.6,445
-Day 1-12,17.2,408[/csv]
-</pre>
-
-Out of this raw data we can create a scatter chart that shows the correlation between the two data sets:
-
-<pre>
-[chart csv='#icecreamsales' type='scatter' category='Period' value='Temperature (Celsius), Sales ($)' format='string, float, integer' color="Crimson" title='Ice Cream Sales vs Temperature. Source: www.mathsisfun.com' description='Scatter Chart displaying the relationship between Ice Cream Sales and Temperature. Source: www.mathsisfun.com']
-</pre>
-
-<b>Table View</b>
-
-To define a table view just reference the csv with a 'table' shortcode (don't forget the '#'). Example:
-
-<pre>
-[table csv='#icecreamsales' title='Ice Cream Sales vs Temperature. Source: www.mathsisfun.com']
-</pre>
-
-The <code>chart</code> shortcode has many more attributes than shown here. Please refer to our [User Guide](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/ "IPU-Chart User Guide").
-
-Visit our [Support Forum](https://www.ipublia.com/support/forums/ "IPU-Chart Support Forum") for questions or suggestions.
+Please visit our [Support Forum](https://www.ipublia.com/support/forums/ "IPU-Chart Support Forum") for questions or suggestions.
 
 = Further Reading =
 
+* Our [Blogs](https://www.ipublia.com/category/wordpress/ipu-chart/ "Blogs about IPU-Chart") about IPU-Chart
 * The IPU-Chart for WordPress [User Guide](https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/ "IPU-Chart User Guide").
 * The IPU-Chart [Support Forum](https://www.ipublia.com/support/forums/ "IPU-Chart Support Forum").
 * The IPU-Chart [Product Page](https://www.ipublia.com/products/ipu-chart-svg-chart-library/ "IPU-Chart Product Page").
@@ -179,12 +101,13 @@ For questions or issues with IPU-Chart please use this support channels:
 
 1. Bar chart (with a tooltip)
 2. Horizontal bar chart
-3. Pie Chart
-4. Donut Chart
+3. Pie chart
+4. Donut chart
 5. Line chart
 6. Interpolated line chart
 7. Scatter chart (simple)
 8. Scatter chart (more complex)
+9. Line chart with an alternative layout
 
 == Changelog ==
 
@@ -218,6 +141,10 @@ For questions or issues with IPU-Chart please use this support channels:
 * Shortcodes inside [csv][/csv] are processed now
 * Minor bug fixes
 
+= 0.4.1 =
+* Support for tab separated (tsv) data added
+* [tsv] shortcode added
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -236,3 +163,8 @@ This version adds bug fixes in the documentation.
 Scatter charts added.
 Shortcodes inside [csv][/csv] are processed now.
 Minor bug fixes.
+
+= 0.4.1 =
+* [tsv] shortcode added for better Excel compability (use it like the [csv] but with tab separated data)
+* Tables can now be defined with [chart type="table" ...]. The columns to display can now be choosen with the 'category' and 'value' attributes. 
+* The [table] shortcode is still supported but deprecated.
