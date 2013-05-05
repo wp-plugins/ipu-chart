@@ -89,7 +89,7 @@ function renderError(figure, error) {
 	return false;
 }
 
-function createFigureElement(id, title, description, style) {
+function createFigureElement(id, title, description, style, version) {
 	var figure = d3.select('#' + id);	
 	figure.attr("style", style);
 
@@ -127,7 +127,7 @@ function createTooltip() {
 	return tooltip;
 }
 
-function renderChart(id, csv, type, category, value, format, color, style, title, description, sort, interpolate, animate, img, debug, version) {
+function renderChart(id, csv, tsv, type, category, value, format, color, style, title, description, sort, interpolate, animate, img, debug, version) {
 	
 	debug = (debug.toLowerCase() == "true");
 
@@ -144,8 +144,9 @@ function renderChart(id, csv, type, category, value, format, color, style, title
 					
 					
 		console.log("CALL RENDER CHART: "
-					+ "\n\tid: " + id 
+					+ "\n\tid: " + id
 					+ "\n\tcsv: " + csv
+					+ "\n\ttsv: " + tsv
 					+ "\n\ttype: " + type
 					+ "\n\tcategory: " + category
 					+ "\n\tvalue: " + value
@@ -161,11 +162,16 @@ function renderChart(id, csv, type, category, value, format, color, style, title
 					+ "\n\tdebug: " + debug);
 	}
 	
-	var figure = createFigureElement(id, title, description, style);
-
-	if(!svgSupport) return renderNoSvgSupport(figure, img);
-		
-	createTooltip();
+	var figure = null;
+	
+	if(type === 'table') {
+		figure = d3.select("#" + id);
+		figure.append("caption").text(title);
+	} else {
+		figure = createFigureElement(id, title, description, style, version);
+		if(!svgSupport) return renderNoSvgSupport(figure, img);
+		createTooltip();
+	}
 	
 	category = toArray(category);
 	value = toArray(value);
@@ -177,24 +183,49 @@ function renderChart(id, csv, type, category, value, format, color, style, title
 	else if(animate[0] == "medium") animate = ["2000", "linear"];
 	else if(animate[0] == "fast") animate = ["1000", "linear"];
 	
-	if((/^#/).test(csv)) {
-		if(d3.select(csv).empty()) {
-			return renderError(figure, "The csv '" + csv + "' does not exist in this document.");
-		}	
-		data = d3.csv.parse(d3.select(csv).text());
-		if(debug) { console.log("Loaded data (sync): "); console.log(data) };
+	if(csv.length > 0) {
+		if((/^#/).test(csv)) {
+			if(d3.select(csv).empty()) {
+				return renderError(figure, "The csv '" + csv + "' does not exist in this document.");
+			}	
+			data = d3.csv.parse(d3.select(csv).text());
+			if(debug) { console.log("Loaded data (sync): "); console.log(data) };
 		
-		render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
-		
-	} else {
-		d3.csv(csv, function(error, data) {
-			if(error) {
-				console.warn("There was an error loading the data: " + error);
-				return renderError(figure, "There was an error loading the data: " + csv);
-			}
-			if(debug) { console.log("Loaded data (async): "); console.log(data) };
 			render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
-  		});  			
+		
+		} else {
+			d3.csv(csv, function(error, data) {
+				if(error) {
+					console.warn("There was an error loading the data: " + error);
+					return renderError(figure, "There was an error loading the data: " + csv);
+				}
+				if(debug) { console.log("Loaded data (async): "); console.log(data) };
+				render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
+  			});  			
+		}
+	} else if(tsv.length > 0) {
+		if((/^#/).test(tsv)) {
+			if(d3.select(tsv).empty()) {
+				return renderError(figure, "The tsv '" + tsv + "' does not exist in this document.");
+			}	
+			data = d3.tsv.parse(d3.select(tsv).text());
+			if(debug) { console.log("Loaded data (sync): "); console.log(data) };
+		
+			render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
+		
+		} else {
+			d3.tsv(tsv, function(error, data) {
+				if(error) {
+					console.warn("There was an error loading the data: " + error);
+					return renderError(figure, "There was an error loading the data: " + tsv);
+				}
+				if(debug) { console.log("Loaded data (async): "); console.log(data) };
+				render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
+  			});  			
+		}
+	} else {
+		console.warn("There is no data to display (set a csv or tsv that point to the data)");
+		return renderError(figure, "There is no data to display.");
 	}
 }	
 
@@ -219,6 +250,9 @@ function render(figure, data, type, category, value, format, color, sort, interp
     	
     else if(type.toLowerCase().trim() == "scatter") 
     	renderScatter(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+    	
+    else if(type.toLowerCase().trim() == "table") 
+    	renderTable(figure, data, category, value, debug);
     	
     else if(type.toLowerCase().trim() == "line.multi") 
     	renderLineMulti(figure, data, category, value, format, color, sort, interpolate, animate, debug);
@@ -737,9 +771,45 @@ function renderDonut(figure, data, category, value, format, color, sort, interpo
    	if(debug) { console.log("END RENDER DONUT") }; 
 } 
 
-function renderTable(id, csv, title, debug) {
+function renderTable(figure, data, category, value, debug) {
+	if(debug) { console.log("START RENDER TABLE") };
+
+	var columns = category.concat(value);
+
+    thead = figure.append("thead"),
+	tbody = figure.append("tbody");
+	
+    // append the header row
+    thead.append("tr")
+        .selectAll("th")
+        .data(columns)
+        .enter()
+        .append("th")
+            .text(function(column) { return column; });
+
+    // create a row for each object in the data
+    var rows = tbody.selectAll("tr")
+        .data(data)
+        .enter()
+        .append("tr");
+
+    // create a cell in each row for each column
+    var cells = rows.selectAll("td")
+        .data(function(row) {
+            return columns.map(function(column) {
+                return {column: column, value: row[column]};
+            });
+        })
+        .enter()
+        .append("td")
+            .text(function(d) { return d.value; });
+
+	if(debug) { console.log("END RENDER TABLE"); }	
+}
+
+function renderTableDeprecated(id, csv, title, debug) {
 	var debug = (debug.toLowerCase() == "true");
-	if(debug) { console.log("START RENDER TABLE"
+	if(debug) { console.log("START RENDER TABLE (deprecated)"
 								+ "\n\tid: " + id 
 								+ "\n\tcsv: " + csv
 								+ "\n\ttitle: " + title
@@ -784,7 +854,7 @@ function renderTable(id, csv, title, debug) {
         .append("td")
             .text(function(d) { return d.value; });
             
-    if(debug) { console.log("END RENDER TABLE"); }
+    if(debug) { console.log("END RENDER TABLE (deprecated)"); }
 }
 	
 function showTooltip(d) {
