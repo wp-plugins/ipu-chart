@@ -7,7 +7,7 @@ Stable tag: 0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates SVG based, animated bar, pie, donut, line, scatter and word map charts out of your data. A powerful, easy to use shortcode.
+Creates SVG based, animated bar, pie, donut, line, scatter and world map charts out of your data. A powerful, easy to use shortcode.
 
 == Description ==
 
