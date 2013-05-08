@@ -1,10 +1,10 @@
 <?php
 /*
 	Plugin Name: IPU-Chart
-	Plugin URI: https://www.ipublia.com/ipu-chart
-	Description: Creates SVG based charts out of your comma or tab separated data. Currently supports bar, pie, donut, line and scatter charts.
+	Plugin URI: https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/
+	Description: Creates SVG based charts out of your comma or tab separated data. Currently supports bar, pie, donut, line, scatter and world map charts.
 	Author: ipublia, Thomas Müller Flury
-	Version: 0.4.1
+	Version: 0.5
 	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuchart
 	Domain Path: /lang
@@ -128,10 +128,16 @@ function ipu_render_table($id, $csv, $title, $debug) {
 
 // Add plug-in's scripts to the header of the pages
 function ipu_add_custom_scripts() {   
-    wp_register_script('custom-script-d3', plugins_url( '/js/d3/d3.v3.min.js', __FILE__ )); 
+    wp_register_script('custom-script-d3', plugins_url( '/js/d3/d3.v3.min.js', __FILE__ ));
+    wp_register_script('custom-script-queue', plugins_url( '/js/d3/queue.v1.min.js', __FILE__ ));
+    wp_register_script('custom-script-d3-geo-projection', plugins_url( '/js/d3/d3.geo.projection.v0.min.js', __FILE__ ));
+ 	wp_register_script('custom-script-topojson', plugins_url( '/js/d3/topojson.v0.min.js', __FILE__ ));
     wp_register_script('custom-script-ipuc', plugins_url( '/js/ipu-chart.js', __FILE__ ));  
   
-    wp_enqueue_script('custom-script-d3'); 
+    wp_enqueue_script('custom-script-d3');
+    wp_enqueue_script('custom-script-queue');
+    wp_enqueue_script('custom-script-d3-geo-projection');
+    wp_enqueue_script('custom-script-topojson'); 
     wp_enqueue_script('custom-script-ipuc');  
 } 
 add_action('wp_enqueue_scripts', 'ipu_add_custom_scripts' ); 

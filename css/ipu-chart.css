@@ -16,8 +16,42 @@ figure .legend {
 }
 
 .chart svg {
-  //border: 2px solid red;
+//  border: 2px solid red;
   font: 0.8em sans-serif;
+}
+
+/* Map chart definitions */
+
+.ISO-3166-1 {
+	//color: transparent;
+	font-size: 0.8em;
+}
+
+.stroke {
+  fill: none;
+  stroke: dimgray;
+  stroke-width: 0.5px;
+}
+
+.fill {
+  fill: #fff;
+}
+
+.graticule {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+.land {
+  fill: #222;
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
 }
 
 /* Pie chart definitions */
