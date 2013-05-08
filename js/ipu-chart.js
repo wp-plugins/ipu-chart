@@ -5,8 +5,24 @@ var userAgent = navigator.userAgent.toLowerCase(),
 	ipad = /ipad/.test(userAgent),
 	touch_device = window.Touch ? true : false,
 	svgSupport = window.SVGSVGElement ? true : false,
+	pluginPath = getPluginPath(),
 	defaultOpacity = 0.7,
 	tooltip;
+
+function getPluginPath() {
+    var scripts = document.getElementsByTagName('script');
+    var path = '';
+    if(scripts && scripts.length>0) {
+        for(var i in scripts) {
+            if(scripts[i].src && scripts[i].src.indexOf("js/ipu-chart.js") > 0) {
+            	file =  scripts[i].src;
+                path = file.substring(0, file.indexOf("js/ipu-chart.js"));
+                break;
+            }
+        }
+    }
+    return path;
+};
 
 function toArray(l) {
 	ll = l.split(',');
@@ -16,8 +32,16 @@ function toArray(l) {
 	return ll;
 }
 
+var dateFormat = d3.time.format("%d-%b-%Y");
+var numberFormat = d3.format("n");
+  	
+function isNumber(n) {
+	return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 function parserFor(format) {
 	format = format.trim();
+	if(format == "n" || format == "number") return parseFloat;
  	if(format == "i" || format == "integer") return parseInt;
  	if(format == "f" || format == "float") return parseFloat;
  	if(format == "s" || format == "string") return function(s) { return s; };
@@ -95,10 +119,14 @@ function createFigureElement(id, title, description, style, version) {
 
 	var	svg = figure.append("svg");
 	
-	svg.append("g")
-		.attr("class", "meta")
-		.append("title").text(title)
-		.append("description").text(description);
+	var meta = svg.append("g")
+		.attr("class", "meta");
+		
+	meta.append("title").text(title);
+	meta.append("description").text(description);
+	meta.append("a")
+		.attr("href", "https://www.ipublia.com/products/ipu-chart-svg-chart-library/")
+		.text(version + " (IPU448032107)");
 		
 	figure.append("figcaption").text(title);	
 
@@ -140,8 +168,8 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 					+ "\n\tscreen width/height: " + screen.width + "px/" + screen.height + "px");
 					
 		console.log("PLUGIN: "
-					+ "\n\t" + version);
-					
+					+ "\n\tversion: " + version
+					+ "\n\tpath: " + getPluginPath());
 					
 		console.log("CALL RENDER CHART: "
 					+ "\n\tid: " + id
@@ -178,7 +206,7 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 	format = toArray(format);
 	color = toArray(color);
 	animate = toArray(animate);
-	
+		
 	if(animate[0] == "slow") animate = ["5000", "linear"];
 	else if(animate[0] == "medium") animate = ["2000", "linear"];
 	else if(animate[0] == "fast") animate = ["1000", "linear"];
@@ -232,7 +260,7 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 function render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug) {
 	
 	data = parseData(data, category, value, format, debug);
-
+	
     if(type.toLowerCase().trim() == "bar") 
     	renderBar(figure, data, category, value, format, color, sort, interpolate, animate, debug);
     	
@@ -251,6 +279,9 @@ function render(figure, data, type, category, value, format, color, sort, interp
     else if(type.toLowerCase().trim() == "scatter") 
     	renderScatter(figure, data, category, value, format, color, sort, interpolate, animate, debug);
     	
+    else if(type.toLowerCase().trim() == "map.world.countries") 
+    	renderMapWorldCountries(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+    	
     else if(type.toLowerCase().trim() == "table") 
     	renderTable(figure, data, category, value, debug);
     	
@@ -258,6 +289,133 @@ function render(figure, data, type, category, value, format, color, sort, interp
     	renderLineMulti(figure, data, category, value, format, color, sort, interpolate, animate, debug);
 }
 
+function renderMapWorldCountries(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
+	if(debug) console.log("START RENDER WORLD MAP COUNTRIES");
+	
+	var color = d3.scale.log()
+		.domain(d3.extent(data, function(d) { return d[value[0]] }))
+		.range([color[0], color[1]]);
+				
+	var svg = figure.select("svg");
+	var g = svg.select("g.main");
+
+	var margin = {top: 1, right: 1, bottom: 1, left: 1},
+    	width = parseInt(svg.attr("width")) - margin.left - margin.right,
+    	height = parseInt(svg.attr("height")) - margin.top - margin.bottom,
+    	centered;
+	
+	var projection = d3.geo.kavrayskiy7()
+    	.scale(105)
+    	.translate([width / 2, height / 2])
+    	.precision(.1);
+
+	var path = d3.geo.path()
+    	.projection(projection);
+
+	var graticule = d3.geo.graticule();
+
+	g.append("defs").append("path")
+		.datum({type: "Sphere"})
+		.attr("id", "sphere")
+		.attr("d", path);
+
+	g.append("use")
+		.attr("class", "stroke")
+		.attr("xlink:href", "#sphere");
+
+	g.append("use")
+		.attr("class", "fill")
+		.attr("xlink:href", "#sphere");
+
+	g.append("path")
+		.datum(graticule)
+		.attr("class", "graticule")
+		.attr("d", path);
+ 
+	queue()
+		.defer(d3.json, pluginPath + "raw/world-110m.json")
+		.defer(d3.tsv, pluginPath + "raw/world-ISO-3166-1-numeric.tsv")
+		.await(ready);
+ 
+	function ready(error, world, names) {
+		var globe = {type: "Sphere"},
+		land = topojson.object(world, world.objects.land),
+		countries = topojson.object(world, world.objects.countries).geometries,
+		borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a.id !== b.id; });
+       
+		countries = countries.filter(function(d) {
+			return names.some(function(n) {
+				if (d.id == n["ISO-3166-1"]) return d.name = n.name;
+			});
+		}).sort(function(a, b) {
+    		return a.name.localeCompare(b.name);
+  		});
+  
+
+		data.forEach(function(d, i) {
+			countries.forEach(function(c, j) {
+				if (c.id == d["ISO-3166-1"]) {
+					value.forEach(function(v, k) {
+						c[v] = d[v];
+					});				
+					return;
+				}
+			});
+  		});
+    
+		g.selectAll(".country")
+			.data(countries)
+			.enter().insert("path", ".graticule")
+			.attr("class", "country")
+			.attr("d", path)
+			.style("fill", function(d, i) { return d[value[0]] ? color(d[value[0]]) : "gray"; })
+			.style("opacity", defaultOpacity);
+
+		g.insert("path", ".graticule")
+			.datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+			.attr("class", "boundary")
+			.attr("d", path);
+						
+		if(touch_device) {
+       		g.selectAll(".country")
+       			.on("touchstart", showTooltip);
+		} else {
+			g.selectAll(".country")	
+				.on("mouseover", showTooltip)
+				.on("mousemove", moveTooltip)
+				.on("mouseout", hideTooltip)
+				.on("click", zoom);	
+   		}
+   		
+		function zoom(d) {
+  			var x, y, k;
+  
+  			if (d && centered !== d) {
+				var centroid = path.centroid(d);
+				x = centroid[0];
+				y = centroid[1];
+				k = 4;
+				centered = d;
+			} else {
+				x = width / 2;
+				y = height / 2;
+				k = 1;
+				centered = null;
+			}
+
+			g.selectAll(".country")
+				.classed("active", centered && function(d) { return d === centered; });
+
+			g.transition()
+				.duration(1000)
+				.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+				.style("stroke-width", 1.5 / k + "px");
+		}
+			
+		if(debug) { console.log("END RENDER WORLD MAP COUNTRIES") };
+	};
+}
+	
 function renderScatter(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
 	if(debug) { console.log("START RENDER SCATTER"); }
 	
@@ -802,7 +960,7 @@ function renderTable(figure, data, category, value, debug) {
         })
         .enter()
         .append("td")
-            .text(function(d) { return d.value; });
+            .text(function(d) { return isNumber(d.value) ? numberFormat(d.value) : d.value; });
 
 	if(debug) { console.log("END RENDER TABLE"); }	
 }
@@ -852,7 +1010,7 @@ function renderTableDeprecated(id, csv, title, debug) {
         })
         .enter()
         .append("td")
-            .text(function(d) { return d.value; });
+            .text(function(d) { return isNumber(d.value) ? numberFormat(d.value) : d.value; });
             
     if(debug) { console.log("END RENDER TABLE (deprecated)"); }
 }
@@ -874,14 +1032,16 @@ function showTooltip(d) {
     d3.selectAll(".scdot").transition()
        	.duration(100)
        	.style("opacity", defaultOpacity);
+       	
+    d3.selectAll(".country").transition()
+       	.duration(100)
+       	.style("opacity", defaultOpacity);
        				
 	d3.select(this).transition()
 		.duration(200)
 		.delay(100)
 		.style("opacity", 1.0);
-  	
-  	var dateFormat = d3.time.format("%d-%b-%Y %X");
-  			
+  	  	
 	tooltip.html(function() {
 		var str = "";
 		if(d.data != null) {
@@ -889,16 +1049,28 @@ function showTooltip(d) {
 				var val = d.data[e];
 				if(val instanceof Date) {
 					val = dateFormat(val);
+				} else if(isNumber(val)) {
+					val = numberFormat(val);
 				}
 				str += "<span class='label'>" + e + "</span>" + val + "<br/>";			
 			}
-		} else {				
+		} else {
 			for(var e in d) {
 				var val = d[e];
 				if(val instanceof Date) {
 					val = dateFormat(val);
-				}			
-				str += "<span class='label'>" + e + "</span>" + val + "<br/>";			
+				} else if(isNumber(val)) {
+					val = numberFormat(val);
+				}					
+				if(d.type == "Polygon" || d.type == "MultiPolygon") {
+					if(e == 'id') {
+						str += "<span class='ISO-3166-1'>" + val + "</span><br/>";
+					} else if(e != 'type' && e != 'coordinates') {
+						str += "<span class='label'>" + e + "</span>" + val + "<br/>";
+					}
+				} else {
+					str += "<span class='label'>" + e + "</span>" + val + "<br/>";
+				}
 			}
 		}
 		return str;
@@ -943,6 +1115,10 @@ function hideTooltip(d) {
        	.style("opacity", 0.0);
        	
 	d3.selectAll(".scdot").transition()
+       	.duration(200)
+       	.style("opacity", defaultOpacity);
+       	
+	d3.selectAll(".country").transition()
        	.duration(200)
        	.style("opacity", defaultOpacity);
        	

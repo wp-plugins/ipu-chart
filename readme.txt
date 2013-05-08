@@ -1,37 +1,39 @@
 === Plugin Name ===
 Contributors: thmufl
-Tags: chart, diagram, svg, csv, excel, numbers, bar chart, pie chart, line chart, donut chart, scatter chart, animation, quotes
+Tags: chart, bar chart, pie chart, line chart, donut chart, scatter chart, world map, map, countries, animation, quotes, diagram, csv, tsv, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.4.1
+Stable tag: 0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates SVG based, animated bar, pie, donut, line and scatter charts out of your data. A powerful, easy to use shortcode.
+Creates SVG based, animated bar, pie, donut, line, scatter and word map charts out of your data. A powerful, easy to use shortcode.
 
 == Description ==
 
-IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line and scatter charts out of your csv (comma separated) or tsv (tab separated) data.
+IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line, scatter and world map charts out of your csv (comma separated) or tsv (tab separated) data.
 
 The plugin allows you to load the data to display as a chart from a remote service that delivers csv or tsv formatted data. You can also export you data from favorite spreadsheet application (Excel, Numbers, Open Office) and display it as a chart in your blog or page.
 
 IPU-Chart is based on [SVG](http://www.w3.org/TR/SVG/) and [D3](http://d3js.org/). It works perfectly on large computer screens as well as on tablets and smaller mobile screens. For browsers that do not support SVG an alternative image can be set.
 
-The styling of all chart types can be done precisely and easily with css. 
+The styling of all chart types can be done precisely and easily with css.
 
 = Features =
 
-* Create bar, pie, donut, line and scatter charts
+* Create bar, pie, donut, line, scatter charts and world map charts
 * Enter the csv/tsv data directy in you blog or page
 * Load the csv/tsv data from a remote location
 * Create multiple views of the data
 * Style the charts with css
 * Tooltip for chart details (see screenshots)
-* Animated bar charts
+* Animated world map and bar charts
 * Define colors and number formats of the chart
 * Create an additional table view of the data
 
 = Usage =
+
+*Read our blog [Create a World Map in WordPress](https://www.ipublia.com/create-a-world-map-in-wordpress/ "Create a World Map in WordPress") for a short introduction of the new world map chart.* 
 
 First, define your data. You can create it immediately in WordPress or copy and paste it from an export of your favourite spreadsheet application. Example:
 
@@ -44,18 +46,20 @@ Indonesia,248.22
 Brazil,205.72[/csv]
 </pre>
 
-Second, define the chart. Reference the csv (or tsv). Set the chart type and the category and value column. Define the format (string, integer, float or date) of the category and value columns. Enter a title and a description for the chart:
+Second, define the chart. Reference the csv (or tsv). Set the chart type and the category and value column. Define the format (string, number, integer, float or date) of the category and value columns. Enter a title and a description for the chart:
 
 <pre>
 [chart csv='#data' 
        type='bar' 
        category='Country'
        value='Population' 
-       format='string, float'
+       format='string, number'
        title='Top five most populous countries of the world...' 
        description='The top five most populous countries of the world...'
        animate='medium']
 </pre>
+
+**Important:** Please enter the attributes in one line without the linefeeds (otherwise WordPress will not understand the shortcode). The linefeeds in the example are for legibility only.
 
 But the data can of course also be requested by url:
 
@@ -64,7 +68,7 @@ But the data can of course also be requested by url:
        type='line'
        category='Date'
        value='Sales ($)'
-       format='dd.mm.yy, float'
+       format='dd.mm.yy, number'
        color='green'
        title='Sales of the week']
 </pre>
@@ -105,8 +109,9 @@ For questions or issues with IPU-Chart please use this support channels:
 4. Donut chart
 5. Line chart
 6. Interpolated line chart
-7. Scatter chart (simple)
+7. Scatter chart
 8. Line chart with an alternative layout
+9. World map chart
 
 == Changelog ==
 
@@ -144,6 +149,11 @@ For questions or issues with IPU-Chart please use this support channels:
 * Support for tab separated (tsv) data added
 * [tsv] shortcode added
 
+= 0.5 =
+* World Map chart type (map.world.countries) added
+* number (n) as format added
+* Improvements in formatting numbers
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -167,3 +177,8 @@ Minor bug fixes.
 * [tsv] shortcode added for better Excel compability (use it like the [csv] but with tab separated data)
 * Tables can now be defined with [chart type="table" ...]. The columns to display can now be choosen with the 'category' and 'value' attributes. 
 * The [table] shortcode is still supported but deprecated.
+
+= 0.5 =
+* World Map chart type (map.world.countries) added
+* number (n) as format added
+* Improvements in formatting numbers
