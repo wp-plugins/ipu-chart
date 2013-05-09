@@ -59,6 +59,7 @@ function parserFor(format) {
  
 function scaleFor(format) {
 	format = format.trim();
+	if(format == "n" || format == "number") return d3.scale.linear();
  	if(format == "i" || format == "integer") return d3.scale.linear();
  	if(format == "f" || format == "float") return d3.scale.linear();
  	if(format == "s" || format == "string") return d3.scale.ordinal();
@@ -339,7 +340,6 @@ function renderMapWorldCountries(figure, data, category, value, format, color, s
  
 	function ready(error, world, names) {
 		var globe = {type: "Sphere"},
-		land = topojson.object(world, world.objects.land),
 		countries = topojson.object(world, world.objects.countries).geometries,
 		borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a.id !== b.id; });
        

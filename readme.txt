@@ -3,11 +3,11 @@ Contributors: thmufl
 Tags: chart, bar chart, pie chart, line chart, donut chart, scatter chart, world map, map, countries, animation, quotes, diagram, csv, tsv, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.5
+Stable tag: 0.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates SVG based, animated bar, pie, donut, line, scatter and world map charts out of your data. A powerful, easy to use shortcode.
+Creates SVG based, animated bar, pie, donut, line, scatter and world map charts out of your spreadsheet data. A powerful, easy to use shortcode.
 
 == Description ==
 
@@ -154,6 +154,9 @@ For questions or issues with IPU-Chart please use this support channels:
 * number (n) as format added
 * Improvements in formatting numbers
 
+= 0.5.1 =
+* Patch for number formats
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -182,3 +185,7 @@ Minor bug fixes.
 * World Map chart type (map.world.countries) added
 * number (n) as format added
 * Improvements in formatting numbers
+
+= 0.5.1 =
+* Patch for number formats
+
