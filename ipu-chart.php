@@ -2,9 +2,9 @@
 /*
 	Plugin Name: IPU-Chart
 	Plugin URI: https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/
-	Description: Creates SVG based charts out of your comma or tab separated data. Currently supports bar, pie, donut, line, scatter and world map charts.
+	Description: Creates D3/SVG based charts out of your comma- or tab-separated data. Currently supports bar, pie, donut, line, scatter and world map charts.
 	Author: ipublia, Thomas Müller Flury
-	Version: 0.5
+	Version: 0.5.1
 	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuchart
 	Domain Path: /lang
