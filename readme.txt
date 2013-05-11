@@ -1,17 +1,17 @@
 === Plugin Name ===
 Contributors: thmufl
-Tags: chart, bar chart, pie chart, line chart, donut chart, scatter chart, world map, map, countries, animation, quotes, diagram, csv, tsv, excel, numbers, svg, d3, d3js
+Tags: chart, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.5.1
+Stable tag: 0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates SVG based, animated bar, pie, donut, line, scatter and world map charts out of your spreadsheet data. A powerful, easy to use shortcode.
+Creates SVG based, animated bar, pie, donut, line, scatter, bubble and world map charts out of your spreadsheet data. A powerful, easy to use shortcode.
 
 == Description ==
 
-IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line, scatter and world map charts out of your csv (comma separated) or tsv (tab separated) data.
+IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line, scatter, bubble and world map charts out of your csv (comma separated) or tsv (tab separated) data.
 
 The plugin allows you to load the data to display as a chart from a remote service that delivers csv or tsv formatted data. You can also export you data from favorite spreadsheet application (Excel, Numbers, Open Office) and display it as a chart in your blog or page.
 
@@ -21,12 +21,13 @@ The styling of all chart types can be done precisely and easily with css.
 
 = Features =
 
-* Create bar, pie, donut, line, scatter charts and world map charts
+* Create bar, pie, donut, line, scatter, bubble and world map charts
 * Enter the csv/tsv data directy in you blog or page
 * Load the csv/tsv data from a remote location
 * Create multiple views of the data
 * Style the charts with css
 * Tooltip for chart details (see screenshots)
+* Animated multi series bubble charts
 * Animated world map and bar charts
 * Define colors and number formats of the chart
 * Create an additional table view of the data
@@ -112,6 +113,7 @@ For questions or issues with IPU-Chart please use this support channels:
 7. Scatter chart
 8. Line chart with an alternative layout
 9. World map chart
+10. Bubble chart
 
 == Changelog ==
 
@@ -157,6 +159,9 @@ For questions or issues with IPU-Chart please use this support channels:
 = 0.5.1 =
 * Patch for number formats
 
+= 0.6 =
+* Bubble charts added
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -188,4 +193,8 @@ Minor bug fixes.
 
 = 0.5.1 =
 * Patch for number formats
+
+= 0.6 =
+* Support for animated, multi-series bubble charts added
+
 

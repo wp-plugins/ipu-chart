@@ -16,7 +16,7 @@ figure .legend {
 }
 
 .chart svg {
-//  border: 2px solid red;
+  //border: 2px solid red;
   font: 0.8em sans-serif;
 }
 
@@ -44,14 +44,18 @@ figure .legend {
   stroke-opacity: .5;
 }
 
-.land {
-  fill: #222;
-}
-
 .boundary {
   fill: none;
   stroke: #fff;
   stroke-width: .5px;
+}
+
+/* Bubble chart definitions */
+.node {
+
+}
+ 
+.node .leaf {
 }
 
 /* Pie chart definitions */
@@ -132,8 +136,8 @@ figure .legend {
 /* Tooltip definitions */
 
 div.iputooltip {
-	font: 0.8em sans-serif;
-	line-height: 1.5;
+	font: 0.75em sans-serif;
+	line-height: 1.0;
 	color: Black;
     position: absolute;
     padding: 5px 10px 5px 10px;
@@ -146,5 +150,5 @@ div.iputooltip span.label {
 	display: inline-block;
 	width: 40%;
 	margin-right: 10px;
-	font-weight: bold;
+	//font-weight: bold;
 }

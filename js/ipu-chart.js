@@ -6,7 +6,7 @@ var userAgent = navigator.userAgent.toLowerCase(),
 	touch_device = window.Touch ? true : false,
 	svgSupport = window.SVGSVGElement ? true : false,
 	pluginPath = getPluginPath(),
-	defaultOpacity = 0.7,
+	defaultOpacity = 0.8,
 	tooltip;
 
 function getPluginPath() {
@@ -280,6 +280,9 @@ function render(figure, data, type, category, value, format, color, sort, interp
     else if(type.toLowerCase().trim() == "scatter") 
     	renderScatter(figure, data, category, value, format, color, sort, interpolate, animate, debug);
     	
+    else if(type.toLowerCase().trim() == "bubble") 
+    	renderBubble(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+    	
     else if(type.toLowerCase().trim() == "map.world.countries") 
     	renderMapWorldCountries(figure, data, category, value, format, color, sort, interpolate, animate, debug);
     	
@@ -342,7 +345,7 @@ function renderMapWorldCountries(figure, data, category, value, format, color, s
 		var globe = {type: "Sphere"},
 		countries = topojson.object(world, world.objects.countries).geometries,
 		borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a.id !== b.id; });
-       
+       	
 		countries = countries.filter(function(d) {
 			return names.some(function(n) {
 				if (d.id == n["ISO-3166-1"]) return d.name = n.name;
@@ -414,6 +417,99 @@ function renderMapWorldCountries(figure, data, category, value, format, color, s
 			
 		if(debug) { console.log("END RENDER WORLD MAP COUNTRIES") };
 	};
+}
+
+function renderBubble(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
+	if(debug) { console.log("START RENDER BUBBLE"); }
+	
+	var color = colorScale(color);
+	
+	var svg = figure.select("svg");
+	
+	var margin = {top: 2, right: 2, bottom: 2, left: 2},
+    	width = parseInt(svg.attr("width")) - margin.left - margin.right,
+    	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
+
+	var g = svg.select("g.main");
+	
+	var pack = d3.layout.pack()
+    	.size([width, height])
+    	.padding(1.5)
+   	 	.value(function(d) { return d[value[0]]; })
+   	 	.sort(null);
+	
+	var data = { name: "root", children: data };
+		
+	var node = g.data([data]).selectAll(".node")
+		.data(pack.nodes)
+	.enter().append("g")
+		.attr("class", function(d) { return d.children ? "node" : "leaf node"; })
+		.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+		.attr("d", function(d) { return d.__category = category; })
+		.attr("d", function(d) { return d.__value = value; });
+			
+	node.append("circle")
+		.attr("r", function(d) { return d.r; })
+		.style("display", function(d) { return d.name != "root" ? "inline" : "none"; })
+		.style("fill", function(d) { return color(d[category]); })
+		.style("opacity", defaultOpacity);
+
+	node.append("text")
+		.attr("dy", ".3em")
+		.style("text-anchor", "middle")
+		.text(function(d) { return d[category]; });	
+		
+	var series = g.selectAll(".series")
+		.data(value)
+			.enter().append("g")
+			.attr("class", "series")
+		.attr("transform", function(d, i) { return "translate(-12," + (12 + i * 16) + ")"; });
+
+	series.append("rect")
+		.attr("x", width - 12)
+		.attr("width", 12)
+		.attr("height", 12)
+		.style("stroke", "lightgray")
+		.style("fill", function(d, i) { return i == 0 ? "black" : "lightgray"})
+		.on("click", changeSerie);
+		
+	series.append("text")
+		.attr("x", width - 18)
+		.attr("y", 5)
+		.attr("dy", ".35em")
+		.style("text-anchor", "end")
+		.style("opacity", "0.6")
+		.text(function(d) { return d; });
+		
+	function changeSerie(d, i) {
+				
+		d3.selectAll(".series rect").style("fill", "lightgray");
+		d3.select(this).style("fill", "black");
+		
+		//change pack value
+		pack.value(function(d) { return d[value[i]]; });
+ 
+		// rebind data
+		g.data([data]).selectAll(".leaf .node")
+			.data(pack.nodes);	
+		
+		node.transition()
+			.duration(3000)
+			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+			.select("circle")
+				.attr("r", function(d) { return d.r; });
+	}
+		
+	if(touch_device) {
+       	d3.selectAll(".leaf circle")
+       		.on("touchstart", showTooltip);
+	} else {
+   		d3.selectAll(".leaf circle")	
+   			.on("mouseover", showTooltip)
+   			.on("mousemove", moveTooltip)
+   			.on("mouseout", hideTooltip);
+   	}
+   	if(debug) { console.log("END RENDER BUBBLE") }; 
 }
 	
 function renderScatter(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
@@ -1016,7 +1112,6 @@ function renderTableDeprecated(id, csv, title, debug) {
 }
 	
 function showTooltip(d) {
-
 	d3.selectAll(".bar").transition()
        	.duration(100)
        	.style("opacity", defaultOpacity);
@@ -1036,51 +1131,71 @@ function showTooltip(d) {
     d3.selectAll(".country").transition()
        	.duration(100)
        	.style("opacity", defaultOpacity);
-       				
+
+    d3.selectAll(".leaf circle").transition()
+       	.duration(100)
+       	.style("opacity", defaultOpacity);
+     					
 	d3.select(this).transition()
-		.duration(200)
-		.delay(100)
+		.duration(100)
+		.delay(50)
 		.style("opacity", 1.0);
-  	  	
-	tooltip.html(function() {
-		var str = "";
-		if(d.data != null) {
-			for(var e in d.data) {
-				var val = d.data[e];
+ 	 
+  	if(d.__category) {
+  		tooltip.html(function() {
+  			var str = "<p style='margin: 0.3em 0 0.3em 0;'><span class='label'>" + d.__category + "</span>" + d[d.__category] + "<p>";
+  			for(var e in d.__value) {
+				var val = d[d.__value[e]];
 				if(val instanceof Date) {
-					val = dateFormat(val);
-				} else if(isNumber(val)) {
-					val = numberFormat(val);
-				}
-				str += "<span class='label'>" + e + "</span>" + val + "<br/>";			
-			}
-		} else {
-			for(var e in d) {
-				var val = d[e];
-				if(val instanceof Date) {
-					val = dateFormat(val);
-				} else if(isNumber(val)) {
-					val = numberFormat(val);
-				}					
-				if(d.type == "Polygon" || d.type == "MultiPolygon") {
-					if(e == 'id') {
-						str += "<span class='ISO-3166-1'>" + val + "</span><br/>";
-					} else if(e != 'type' && e != 'coordinates') {
-						str += "<span class='label'>" + e + "</span>" + val + "<br/>";
+						val = dateFormat(val);
+					} else if(isNumber(val)) {
+						val = numberFormat(val);
 					}
-				} else {
-					str += "<span class='label'>" + e + "</span>" + val + "<br/>";
+  				str += "<p style='margin: 0.3em 0 0.3em 0;'><span class='label'>" + d.__value[e] + "</span>" + val + "<br/></p>";	
+  			}
+  			return str;
+  		});
+  	} else { 	
+		tooltip.html(function() {
+			var str = "";
+			if(d.data != null) {
+				for(var e in d.data) {
+					var val = d.data[e];
+					if(val instanceof Date) {
+						val = dateFormat(val);
+					} else if(isNumber(val)) {
+						val = numberFormat(val);
+					}
+					str += "<p style='margin: 0.3em 0 0.3em 0;'><span class='label'>" + e + "</span>" + val + "</p>";			
+				}
+			} else {
+				for(var e in d) {
+					var val = d[e];
+					if(val instanceof Date) {
+						val = dateFormat(val);
+					} else if(isNumber(val)) {
+						val = numberFormat(val);
+					}					
+					if(d.type == "Polygon" || d.type == "MultiPolygon") {
+						if(e == 'id') {
+							str += "<p><span class='ISO-3166-1'>" + val + "</span></p>";
+						} else if(e != 'type' && e != 'coordinates') {
+							str += "<p style='margin: 0.3em 0 0.3em 0;'><span class='label'>" + e + "</span>" + val + "</p>";
+						}
+					} else {
+						str += "<p style='margin: 0.3em 0 0.3em 0;'><span class='label'>" + e + "</span>" + val + "</p>";
+					}
 				}
 			}
-		}
-		return str;
-	});
+			return str;
+		});
+	}
 		  		
 	tooltip
   		.style("left", (d3.event.pageX + 10) + "px")     
         .style("top", (d3.event.pageY) + "px")
         .transition()
-  			.duration(750)
+  			.duration(500)
             .style("opacity", 0.9);
     
     d3.event.stopPropagation();
@@ -1099,31 +1214,35 @@ function moveTooltip(d) {
 function hideTooltip(d) { 
 
 	d3.selectAll(".bar").transition()
-       	.duration(200)
+       	.duration(100)
        	.style("opacity", defaultOpacity);
        	
     d3.selectAll(".arc").transition()
-       	.duration(200)
+       	.duration(100)
        	.style("opacity", defaultOpacity);
        	
     d3.selectAll(".serie").transition()
-       	.duration(200)
+       	.duration(100)
        	.style("opacity", defaultOpacity);
        	
 	d3.selectAll(".dot").transition()
-       	.duration(200)
+       	.duration(100)
        	.style("opacity", 0.0);
        	
 	d3.selectAll(".scdot").transition()
-       	.duration(200)
+       	.duration(100)
        	.style("opacity", defaultOpacity);
        	
 	d3.selectAll(".country").transition()
-       	.duration(200)
+       	.duration(100)
        	.style("opacity", defaultOpacity);
-       	
+
+    d3.selectAll(".leaf circle").transition()
+       	.duration(100)
+       	.style("opacity", defaultOpacity);
+      	
 	tooltip.transition()
-		.duration(200)
+		.duration(100)
 		.style("opacity", 0.0);
     
     d3.event.stopPropagation();
