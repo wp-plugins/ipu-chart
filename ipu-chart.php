@@ -1,10 +1,10 @@
 <?php
 /*
 	Plugin Name: IPU-Chart
-	Plugin URI: https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/
-	Description: Creates D3/SVG based charts out of your comma- or tab-separated data. Currently supports bar, pie, donut, line, scatter, bubble and world map charts.
-	Author: ipublia, Thomas Müller Flury
-	Version: 0.6
+	Plugin URI: https://www.ipublia.com/support/ipu-chart-editor-online/
+	Description: Creates D3/SVG based charts out of your comma- or tab-separated data. Currently supports bar, pie, donut, line, scatter, bubble and world map charts. 
+	Author: Thomas Müller Flury, ipublia
+	Version: 0.6.1
 	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuchart
 	Domain Path: /lang
@@ -21,7 +21,7 @@ function plugin_get_version() {
 // This is the csv tag
 function ipu_csv_func($atts, $content = null) {
 	extract(shortcode_atts(array(
-		'id' => 'csv' . rand(0, 999999),
+		'id' => 'd' . rand(0, 999999),
 	), $atts));
 	
 	if(has_filter("the_content", "wpautop")) {
@@ -34,7 +34,7 @@ function ipu_csv_func($atts, $content = null) {
 // This is the tsv tag
 function ipu_tsv_func($atts, $content = null) {
 	extract(shortcode_atts(array(
-		'id' => 'tsv' . rand(0, 999999),
+		'id' => 'd' . rand(0, 999999),
 	), $atts));
 	
 	if(has_filter("the_content", "wpautop")) {
@@ -47,7 +47,7 @@ function ipu_tsv_func($atts, $content = null) {
 // This is the chart tag
 function ipu_chart_func($atts) {
 	extract(shortcode_atts(array(
-		'id' => 'chart' . rand(0, 999999),
+		'id' => 'c' . rand(0, 999999),
 		'csv' => '',
 		'tsv' => '',
 		'type' => 'bar',

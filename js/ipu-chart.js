@@ -114,12 +114,17 @@ function renderError(figure, error) {
 	return false;
 }
 
-function createFigureElement(id, title, description, style, version) {
-	var figure = d3.select('#' + id);	
+function createFigureElement(id, title, description, style, version, debug) {
+
+	if(debug) console.log("start createFigureElement(id=" + id + ")");
+	
+	var figure = d3.select('#' + id);
+	
+	if(debug) { console.log("createFigureElement: selected figure is:"); console.log(figure); }
+	
 	figure.attr("style", style);
 
 	var	svg = figure.append("svg");
-	
 	var meta = svg.append("g")
 		.attr("class", "meta");
 		
@@ -127,7 +132,7 @@ function createFigureElement(id, title, description, style, version) {
 	meta.append("description").text(description);
 	meta.append("a")
 		.attr("href", "https://www.ipublia.com/products/ipu-chart-svg-chart-library/")
-		.text(version + " (IPU448032107)");
+		.text(version + " (IPUC418032107)");
 		
 	figure.append("figcaption").text(title);	
 
@@ -197,7 +202,7 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 		figure = d3.select("#" + id);
 		figure.append("caption").text(title);
 	} else {
-		figure = createFigureElement(id, title, description, style, version);
+		figure = createFigureElement(id, title, description, style, version, debug);
 		if(!svgSupport) return renderNoSvgSupport(figure, img);
 		createTooltip();
 	}
@@ -207,7 +212,7 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 	format = toArray(format);
 	color = toArray(color);
 	animate = toArray(animate);
-		
+	
 	if(animate[0] == "slow") animate = ["5000", "linear"];
 	else if(animate[0] == "medium") animate = ["2000", "linear"];
 	else if(animate[0] == "fast") animate = ["1000", "linear"];
@@ -263,16 +268,16 @@ function render(figure, data, type, category, value, format, color, sort, interp
 	data = parseData(data, category, value, format, debug);
 	
     if(type.toLowerCase().trim() == "bar") 
-    	renderBar(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+    	renderBar(figure, data, category[0], value[0], format, color, sort, interpolate, animate, debug);
     	
     else if(type.toLowerCase().trim() == "bar.horizontal") 
-    	renderBarHorizontal(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+    	renderBarHorizontal(figure, data, category[0], value[0], format, color, sort, interpolate, animate, debug);
     	 	 
     else if(type.toLowerCase().trim() == "pie") 
-    	renderPie(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+    	renderPie(figure, data, category[0], value[0], format, color, sort, interpolate, animate, debug);
     	
     else if(type.toLowerCase().trim() == "donut") 
-    	renderDonut(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+    	renderDonut(figure, data, category[0], value[0], format, color, sort, interpolate, animate, debug);
     	
 	else if(type.toLowerCase().trim() == "line") 
     	renderLine(figure, data, category, value, format, color, sort, interpolate, animate, debug);

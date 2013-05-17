@@ -1,19 +1,21 @@
 === Plugin Name ===
 Contributors: thmufl
-Tags: chart, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, excel, numbers, svg, d3, d3js
+Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.6
+Stable tag: 0.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates SVG based, animated bar, pie, donut, line, scatter, bubble and world map charts out of your spreadsheet data. A powerful, easy to use shortcode.
+Creates SVG based, animated bar, pie, donut, line, scatter, bubble and world map charts out of your spreadsheet data. A powerful, easy to use shortcode. And even easier with the free [IPU-Chart Editor Online](https://www.ipublia.com/support/ipu-chart-editor-online/)!
 
 == Description ==
 
 IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line, scatter, bubble and world map charts out of your csv (comma separated) or tsv (tab separated) data.
 
 The plugin allows you to load the data to display as a chart from a remote service that delivers csv or tsv formatted data. You can also export you data from favorite spreadsheet application (Excel, Numbers, Open Office) and display it as a chart in your blog or page.
+
+To create complex chart definitions and preview the immedialely use the free [IPU-Chart Editor Online](https://www.ipublia.com/support/ipu-chart-editor-online/) service.
 
 IPU-Chart is based on [SVG](http://www.w3.org/TR/SVG/) and [D3](http://d3js.org/). It works perfectly on large computer screens as well as on tablets and smaller mobile screens. For browsers that do not support SVG an alternative image can be set.
 
@@ -24,6 +26,7 @@ The styling of all chart types can be done precisely and easily with css.
 * Create bar, pie, donut, line, scatter, bubble and world map charts
 * Enter the csv/tsv data directy in you blog or page
 * Load the csv/tsv data from a remote location
+* [IPU-Chart Editor Online](https://www.ipublia.com/support/ipu-chart-editor-online/) to easily define the shortcodes.
 * Create multiple views of the data
 * Style the charts with css
 * Tooltip for chart details (see screenshots)
@@ -34,9 +37,7 @@ The styling of all chart types can be done precisely and easily with css.
 
 = Usage =
 
-*Read our blog [Create a World Map in WordPress](https://www.ipublia.com/create-a-world-map-in-wordpress/ "Create a World Map in WordPress") for a short introduction of the new world map chart.* 
-
-First, define your data. You can create it immediately in WordPress or copy and paste it from an export of your favourite spreadsheet application. Example:
+First, define your data. You can create it immediately in WordPress, use our [IPU-Chart Editor Online](https://www.ipublia.com/support/ipu-chart-editor-online/) service or copy and paste it from an export of your favourite spreadsheet application. Example:
 
 <pre>
 [csv id='data']Country,Population
@@ -114,6 +115,7 @@ For questions or issues with IPU-Chart please use this support channels:
 8. Line chart with an alternative layout
 9. World map chart
 10. Bubble chart
+11. IPU-Chart Editor
 
 == Changelog ==
 
@@ -162,6 +164,9 @@ For questions or issues with IPU-Chart please use this support channels:
 = 0.6 =
 * Bubble charts added
 
+= 0.6.1 =
+* Minor update for interoperability with the editor.
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -196,5 +201,8 @@ Minor bug fixes.
 
 = 0.6 =
 * Support for animated, multi-series bubble charts added
+
+= 0.6.1 =
+* Minor update for the interoperability with the IPU-Chart Editor
 
 
