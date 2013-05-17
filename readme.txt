@@ -7,7 +7,7 @@ Stable tag: 0.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates SVG based, animated bar, pie, donut, line, scatter, bubble and world map charts out of your spreadsheet data. A powerful, easy to use shortcode. And even easier with the free [IPU-Chart Editor Online](https://www.ipublia.com/support/ipu-chart-editor-online/)!
+Creates animated bar, pie, donut, line, scatter, bubble and world map charts out of your spreadsheet data. A d3/svg based shortcode with editor support.
 
 == Description ==
 
