@@ -212,6 +212,7 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 	format = toArray(format);
 	color = toArray(color);
 	animate = toArray(animate);
+	sort = (sort.toLowerCase() == "true");
 	
 	if(animate[0] == "slow") animate = ["5000", "linear"];
 	else if(animate[0] == "medium") animate = ["2000", "linear"];
@@ -431,17 +432,17 @@ function renderBubble(figure, data, category, value, format, color, sort, interp
 	
 	var svg = figure.select("svg");
 	
-	var margin = {top: 2, right: 2, bottom: 2, left: 2},
+	var margin = {top: 8, right: 8, bottom: 8, left: 2},
     	width = parseInt(svg.attr("width")) - margin.left - margin.right,
     	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
 
 	var g = svg.select("g.main");
-	
+		
 	var pack = d3.layout.pack()
     	.size([width, height])
     	.padding(1.5)
    	 	.value(function(d) { return d[value[0]]; })
-   	 	.sort(null);
+   	 	.sort(function(a, b) { return sort ? d3.descending(a.value, b.value) : a.value });
 	
 	var data = { name: "root", children: data };
 		
@@ -450,6 +451,7 @@ function renderBubble(figure, data, category, value, format, color, sort, interp
 	.enter().append("g")
 		.attr("class", function(d) { return d.children ? "node" : "leaf node"; })
 		.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+		.style("opacity", function(d) { return d.r != 0 ? defaultOpacity : 0; })
 		.attr("d", function(d) { return d.__category = category; })
 		.attr("d", function(d) { return d.__value = value; });
 			
@@ -501,8 +503,9 @@ function renderBubble(figure, data, category, value, format, color, sort, interp
 		node.transition()
 			.duration(3000)
 			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+			.style("opacity", function(d) { return d[value[i]] != 0 ? defaultOpacity : 0; })
 			.select("circle")
-				.attr("r", function(d) { return d.r; });
+				.attr("r", function(d) { return d.r; });				
 	}
 		
 	if(touch_device) {
@@ -524,7 +527,7 @@ function renderScatter(figure, data, category, value, format, color, sort, inter
 	
 	var svg = figure.select("svg");
 
-	var margin = {top: 20, right: 20, bottom: 40, left: 80},
+	var margin = {top: 20, right: 20, bottom: 40, left: d3.max(data, function(d) { return 8 * d[value[1]].toString().length; })},
     	width = parseInt(svg.attr("width")) - margin.left - margin.right,
     	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
     	
@@ -537,7 +540,8 @@ function renderScatter(figure, data, category, value, format, color, sort, inter
 	var xAxis = d3.svg.axis()
     	.scale(x)
     	.orient("bottom")
-    	.tickSize(height);
+    	.tickSize(height)
+    	.ticks(8);
 
 	var yAxis = d3.svg.axis()
     	.scale(y)
@@ -622,8 +626,8 @@ function renderLine(figure, data, category, value, format, color, sort, interpol
 	var color = colorScale(color);
 	
 	var svg = figure.select("svg");
-
-	var margin = {top: 20, right: 20, bottom: 40, left: 80},
+	
+	var margin = {top: 20, right: 10, bottom: 40, left: d3.max(data, function(d) { return 8*d[value].toString().length; })},
     	width = parseInt(svg.attr("width")) - margin.left - margin.right,
     	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
     	
@@ -636,7 +640,8 @@ function renderLine(figure, data, category, value, format, color, sort, interpol
 	var xAxis = d3.svg.axis()
     	.scale(x)
     	.orient("bottom")
-    	.tickSize(height);
+    	.tickSize(height)
+    	.ticks(8);
 
 	var yAxis = d3.svg.axis()
     	.scale(y)
@@ -651,7 +656,7 @@ function renderLine(figure, data, category, value, format, color, sort, interpol
 	x.domain(d3.extent(data, function(d) { return d[category]; }));
   	y.domain(d3.extent(data, function(d) { return d[value]; }));
 
-    var chart = svg.append("g")
+    var chart = svg.select(".main").append("g")
     	.attr("class", "chart")
        	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");  	
 
@@ -693,7 +698,7 @@ function renderLine(figure, data, category, value, format, color, sort, interpol
         	.attr("cx", function(d) { return x(d[category]); })       
         	.attr("cy", function(d) { return y(d[value]); })
         	.attr("opacity", 0.0);
-		
+	
 	if(touch_device) {
        	d3.selectAll(".dot")
        		.on("touchstart", showTooltip);
@@ -713,7 +718,7 @@ function renderBar(figure, data, category, value, format, color, sort, interpola
 	
 	var svg = figure.select("svg");
 
-	var margin = {top: 20, right: 20, bottom: 40, left: 80},
+	var margin = {top: 20, right: 20, bottom: 40, left: d3.max(data, function(d) { return 8*d[value].toString().length; })},
     	width = parseInt(svg.attr("width")) - margin.left - margin.right,
     	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
     	    	
@@ -823,8 +828,8 @@ function renderBarHorizontal(figure, data, category, value, format, color, sort,
 	data = data.reverse();
 	
 	var svg = figure.select("svg");
-
-	var margin = {top: 20, right: 20, bottom: 40, left: 80},
+	
+	var margin = {top: 20, right: 30, bottom: 40, left: d3.max(data, function(d) { return 6*d[category].toString().length; })},
     	width = parseInt(svg.attr("width")) - margin.left - margin.right,
     	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
 
@@ -837,7 +842,8 @@ function renderBarHorizontal(figure, data, category, value, format, color, sort,
 	var xAxis = d3.svg.axis()
     	.scale(x)
     	.orient("bottom")
-    	.tickSize(height);
+    	.tickSize(height)
+    	.ticks(6);
 
 	var yAxis = d3.svg.axis()
     	.scale(y)
