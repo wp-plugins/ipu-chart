@@ -4,7 +4,7 @@
 	Plugin URI: https://www.ipublia.com/support/ipu-chart-editor-online/
 	Description: Creates D3/SVG based charts out of your comma- or tab-separated data. Currently supports bar, pie, donut, line, scatter, bubble and world map charts. 
 	Author: Thomas Müller Flury, ipublia
-	Version: 0.6.1
+	Version: 0.6.2
 	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuchart
 	Domain Path: /lang
@@ -58,7 +58,7 @@ function ipu_chart_func($atts) {
 		'style' => 'width:100%;height:300px;',
 		'title' => 'Set a title',
 		'description' => 'Set a description',
-		'sort' => 'none',
+		'sort' => 'true',
 		'interpolate' => 'linear',
 		'animate' => 'none',
 		'img' => '',

@@ -3,11 +3,11 @@ Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.6.1
+Stable tag: 0.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates animated bar, pie, donut, line, scatter, bubble and world map charts out of your data. A d3/svg based shortcode with editor support.
+Creates SVG based, animated bar, pie, donut, line, scatter, bubble and world map charts out of your spreadsheet data. A powerful, easy to use shortcode. And even easier with the free [IPU-Chart Editor Online](https://www.ipublia.com/support/ipu-chart-editor-online/)!
 
 == Description ==
 
@@ -167,6 +167,11 @@ For questions or issues with IPU-Chart please use this support channels:
 = 0.6.1 =
 * Minor update for interoperability with the editor.
 
+= 0.6.2 =
+* Better calculation of left margin for bar, scatter and line charts
+* Update for bubble charts with 0 values in the data series
+* Sor for bubble charts
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -204,5 +209,10 @@ Minor bug fixes.
 
 = 0.6.1 =
 * Minor update for the interoperability with the IPU-Chart Editor
+
+= 0.6.2 =
+* Better calculation of left margin for bar, scatter and line charts
+* Update for bubble charts with 0 values in the data series
+* Sor for bubble charts
 
 
