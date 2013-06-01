@@ -8,6 +8,11 @@ var userAgent = navigator.userAgent.toLowerCase(),
 	pluginPath = getPluginPath(),
 	defaultOpacity = 0.8,
 	tooltip;
+	rawData = null;
+
+function getRawDataAsJSON() {
+	return JSON.stringify(rawData, undefined, 2);
+}
 
 function getPluginPath() {
     var scripts = document.getElementsByTagName('script');
@@ -161,7 +166,7 @@ function createTooltip() {
 	return tooltip;
 }
 
-function renderChart(id, csv, tsv, type, category, value, format, color, style, title, description, sort, interpolate, animate, img, debug, version) {
+function renderChart(id, csv, tsv, json, adapter, type, category, value, format, color, style, title, description, sort, interpolate, animate, img, debug, version) {
 	
 	debug = (debug.toLowerCase() == "true");
 
@@ -181,6 +186,8 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 					+ "\n\tid: " + id
 					+ "\n\tcsv: " + csv
 					+ "\n\ttsv: " + tsv
+					+ "\n\tjson: " + json
+					+ "\n\tadapter: " + adapter
 					+ "\n\ttype: " + type
 					+ "\n\tcategory: " + category
 					+ "\n\tvalue: " + value
@@ -207,6 +214,7 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 		createTooltip();
 	}
 	
+	adapter = new Function("data", adapter);
 	category = toArray(category);
 	value = toArray(value);
 	format = toArray(format);
@@ -224,8 +232,11 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 				return renderError(figure, "The csv '" + csv + "' does not exist in this document.");
 			}	
 			data = d3.csv.parse(d3.select(csv).text());
-			if(debug) { console.log("Loaded data (sync): "); console.log(data) };
-		
+			if(debug) { console.log("Loaded csv data (sync): "); console.log(data) };
+			
+			data = adapter(data);
+			if(debug) { console.log("Adapted data: "); console.log(data) };
+			
 			render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
 		
 		} else {
@@ -234,7 +245,12 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 					console.warn("There was an error loading the data: " + error);
 					return renderError(figure, "There was an error loading the data: " + csv);
 				}
-				if(debug) { console.log("Loaded data (async): "); console.log(data) };
+				if(debug) { console.log("Loaded csv data (async): "); console.log(data) };
+				
+				rawData = data;
+				data = adapter(data);
+				if(debug) { console.log("Adapted data: "); console.log(data) };
+			
 				render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
   			});  			
 		}
@@ -244,8 +260,11 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 				return renderError(figure, "The tsv '" + tsv + "' does not exist in this document.");
 			}	
 			data = d3.tsv.parse(d3.select(tsv).text());
-			if(debug) { console.log("Loaded data (sync): "); console.log(data) };
+			if(debug) { console.log("Loaded tsv data (sync): "); console.log(data) };
 		
+			data = adapter(data);
+			if(debug) { console.log("Adapted data: "); console.log(data) };
+			
 			render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
 		
 		} else {
@@ -254,12 +273,47 @@ function renderChart(id, csv, tsv, type, category, value, format, color, style, 
 					console.warn("There was an error loading the data: " + error);
 					return renderError(figure, "There was an error loading the data: " + tsv);
 				}
-				if(debug) { console.log("Loaded data (async): "); console.log(data) };
+				if(debug) { console.log("Loaded tsv data (async): "); console.log(data) };
+			
+				rawData = data;
+				data = adapter(data);
+				if(debug) { console.log("Adapted data: "); console.log(data) };
+				
 				render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
   			});  			
 		}
+	} else if(json.length > 0) {
+		if((/^#/).test(json)) {
+			if(d3.select(json).empty()) {
+				return renderError(figure, "The json '" + json + "' does not exist in this document.");
+			}
+			data = JSON.parse(d3.select(json).text().replace(/\“|”/g,'"'));
+			if(debug) { console.log("Loaded json data (sync): "); console.log(data) };
+			
+			data = adapter(data);
+			if(debug) { console.log("Adapted data: "); console.log(data) };
+		
+			render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
+		
+		} else {
+			json = json.replace(/&\#038;|&amp;/g, '&');
+			d3.json(json, function(error, data) {
+				if(error) {
+					console.warn("There was an error loading the data: " + error);
+					return renderError(figure, "There was an error loading the data: " + json);
+				}
+				
+				if(debug) { console.log("Loaded json data (async): "); console.log(data) };
+				
+				rawData = data;
+				data = adapter(data);
+				if(debug) { console.log("Adapted data: "); console.log(data) };
+				
+				render(figure, data, type, category, value, format, color, sort, interpolate, animate, debug);
+  			});  			
+		}	
 	} else {
-		console.warn("There is no data to display (set a csv or tsv that point to the data)");
+		console.warn("There is no data to display (set a csv, tsv or json that point to the data)");
 		return renderError(figure, "There is no data to display.");
 	}
 }	
@@ -489,7 +543,8 @@ function renderBubble(figure, data, category, value, format, color, sort, interp
 		.text(function(d) { return d; });
 		
 	function changeSerie(d, i) {
-				
+			
+		console.log("serie: " + i);	
 		d3.selectAll(".series rect").style("fill", "lightgray");
 		d3.select(this).style("fill", "black");
 		
