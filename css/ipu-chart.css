@@ -141,9 +141,10 @@ div.iputooltip {
 	color: Black;
     position: absolute;
     padding: 5px 10px 5px 10px;
-    background: #faf8ba; //#ffffcc;
-    border-radius: 8px;
-	box-shadow: 10px 10px 5px gray;
+    background: GhostWhite; //#faf8ba; #ffffcc;
+    border-radius: 2px;
+    //border: 1px solid lightgray;
+	//box-shadow: 10px 10px 5px lightgray;
 }
 
 div.iputooltip span.label {

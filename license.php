@@ -1,5 +1,5 @@
 <?php
-/*  Copyright 2013  ipublia, Thomas Müller Flury  (email : thmufl@gmail.com)
+/*  Copyright 2013  Thomas Müller Flury, ipublia  (email : thmufl@gmail.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 

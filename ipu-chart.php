@@ -2,9 +2,9 @@
 /*
 	Plugin Name: IPU-Chart
 	Plugin URI: https://www.ipublia.com/support/ipu-chart-editor-online/
-	Description: Creates D3/SVG based charts out of your comma- or tab-separated data. Currently supports bar, pie, donut, line, scatter, bubble and world map charts. 
+	Description: Creates D3/SVG based charts out of your csv, tsv or jason data. Currently supports bar, pie, donut, line, scatter, bubble and world map charts. 
 	Author: Thomas Müller Flury, ipublia
-	Version: 0.6.2
+	Version: 0.7
 	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuchart
 	Domain Path: /lang
@@ -19,7 +19,7 @@ function plugin_get_version() {
 }
 
 // This is the csv tag
-function ipu_csv_func($atts, $content = null) {
+function ipuc_csv_func($atts, $content = null) {
 	extract(shortcode_atts(array(
 		'id' => 'd' . rand(0, 999999),
 	), $atts));
@@ -28,11 +28,11 @@ function ipu_csv_func($atts, $content = null) {
 		$content = str_replace("<br />", "\r", $content);
 	}
 	$content = trim($content);
-	return ipu_render_csv($id, do_shortcode($content));
+	return ipuc_render_csv($id, do_shortcode($content));
 }
 
 // This is the tsv tag
-function ipu_tsv_func($atts, $content = null) {
+function ipuc_tsv_func($atts, $content = null) {
 	extract(shortcode_atts(array(
 		'id' => 'd' . rand(0, 999999),
 	), $atts));
@@ -41,15 +41,30 @@ function ipu_tsv_func($atts, $content = null) {
 		$content = str_replace("<br />", "\r", $content);
 	}
 	$content = trim($content);
-	return ipu_render_tsv($id, do_shortcode($content));
+	return ipuc_render_tsv($id, do_shortcode($content));
+}
+
+// This is the json tag
+function ipuc_json_func($atts, $content = null) {
+	extract(shortcode_atts(array(
+		'id' => 'd' . rand(0, 999999),
+	), $atts));
+	
+	if(has_filter("the_content", "wpautop")) {
+		$content = str_replace("<br />", "\r", $content);
+	}
+	$content = trim($content);
+	return ipuc_render_json($id, do_shortcode($content));
 }
 
 // This is the chart tag
-function ipu_chart_func($atts) {
+function ipuc_chart_func($atts) {
 	extract(shortcode_atts(array(
 		'id' => 'c' . rand(0, 999999),
 		'csv' => '',
 		'tsv' => '',
+		'json' => '',
+		'adapter' => 'return data;',
 		'type' => 'bar',
 		'category' => 'name',
 		'value' => 'value',
@@ -65,14 +80,14 @@ function ipu_chart_func($atts) {
 		'debug' => 'false'
 	), $atts));
 	
-	return ipu_render_chart($id, $csv, $tsv, $type, $category, $value,
+	return ipuc_render_chart($id, $csv, $tsv, $json, $adapter, $type, $category, $value,
 							$format, $color, $style, 
 							$title, $description, $sort, $interpolate, $animate, 
 							$img, $debug, plugin_get_version());
 }
 
 // This is the table tag (deprecated)
-function ipu_table_func($atts) {
+function ipuc_table_func($atts) {
 	extract(shortcode_atts(array(
 		'id' => 'table' . rand(0, 999999),
 		'csv' => '',
@@ -80,45 +95,50 @@ function ipu_table_func($atts) {
 		'debug' => 'false'
 	), $atts));
 	
-	return ipu_render_table($id, $csv, $title, $debug);
+	return ipuc_render_table($id, $csv, $title, $debug);
 }
 
-add_shortcode("csv", "ipu_csv_func");
-add_shortcode("tsv", "ipu_tsv_func");
-add_shortcode("chart", "ipu_chart_func");
-add_shortcode("table", "ipu_table_func");
+add_shortcode("csv", "ipuc_csv_func");
+add_shortcode("tsv", "ipuc_tsv_func");
+add_shortcode("json", "ipuc_tsv_func");
+add_shortcode("chart", "ipuc_chart_func");
+add_shortcode("table", "ipuc_table_func");
 
-function ipu_render_csv($id, $content) {
+function ipuc_render_csv($id, $content) {
 	return "<div id='{$id}' class='csv' style='display:none;white-space:pre;'>{$content}</div>";
 }
 
-function ipu_render_tsv($id, $content) {
+function ipuc_render_tsv($id, $content) {
 	return "<div id='{$id}' class='tsv' style='display:none;white-space:pre;'>{$content}</div>";
 }
 
-function ipu_render_chart($id, $csv, $tsv, $type, $category, $value, $format, $color, $style, $title, $description, $sort, $interpolate, $animate, $img, $debug, $version) {
+function ipuc_render_json($id, $content) {
+	return "<div id='{$id}' class='json' style='display:none;white-space:pre;'>{$content}</div>";
+}
+
+function ipuc_render_chart($id, $csv, $tsv, $json, $type, $category, $value, $format, $color, $style, $title, $description, $sort, $interpolate, $animate, $img, $debug, $version) {
 	if($type === 'table') {
 		return "<table id='{$id}' class='chart table'>
 					<script type='text/javascript'>					
-					renderChart('{$id}', '{$csv}', '{$tsv}', '{$type}', '{$category}', '{$value}', 
-								'{$format}', '{$color}', '{$style}', 
-								'{$title}', '{$description}', '{$sort}', '{$interpolate}', '{$animate}',
-								'{$img}', '{$debug}', '{$version}');
+					renderChart(\"{$id}\", \"{$csv}\", \"{$tsv}\", \"{$json}\", \"{$type}\", \"{$category}\", \"{$value}\", 
+								\"{$format}\", \"{$color}\", \"{$style}\", 
+								\"{$title}\", \"{$description}\", \"{$sort}\", \"{$interpolate}\", \"{$animate}\",
+								\"{$img}\", \"{$debug}\", \"{$version}\");
 					</script>
 				</table>";
 	} else {	
 		return "<figure id='{$id}' class='chart'>
 					<script type='text/javascript'>
-					renderChart('{$id}', '{$csv}', '{$tsv}', '{$type}', '{$category}', '{$value}', 
-								'{$format}', '{$color}', '{$style}', 
-								'{$title}', '{$description}', '{$sort}', '{$interpolate}', '{$animate}',
-								'{$img}', '{$debug}', '{$version}');
+					renderChart(\"{$id}\", \"{$csv}\", \"{$tsv}\", \"{$json}\", \"{$type}\", \"{$category}\", \"{$value}\", 
+								\"{$format}\", \"{$color}\", \"{$style}\", 
+								\"{$title}\", \"{$description}\", \"{$sort}\", \"{$interpolate}\", \"{$animate}\",
+								\"{$img}\", \"{$debug}\", \"{$version}\");
 					</script>
 				</figure>";
 	}
 }
 
-function ipu_render_table($id, $csv, $title, $debug) {
+function ipuc_render_table($id, $csv, $title, $debug) {
 	return "<table id='{$id}' class='chart-data'>
 				<script type='text/javascript'>					
 				renderTableDeprecated('{$id}', '{$csv}', '{$title}', '{$debug}');
@@ -127,7 +147,7 @@ function ipu_render_table($id, $csv, $title, $debug) {
 }
 
 // Add plug-in's scripts to the header of the pages
-function ipu_add_custom_scripts() {   
+function ipuc_add_custom_scripts() {   
     wp_register_script('custom-script-d3', plugins_url( '/js/d3/d3.v3.min.js', __FILE__ ));
     wp_register_script('custom-script-queue', plugins_url( '/js/d3/queue.v1.min.js', __FILE__ ));
     wp_register_script('custom-script-d3-geo-projection', plugins_url( '/js/d3/d3.geo.projection.v0.min.js', __FILE__ ));
@@ -140,11 +160,36 @@ function ipu_add_custom_scripts() {
     wp_enqueue_script('custom-script-topojson'); 
     wp_enqueue_script('custom-script-ipuc');  
 } 
-add_action('wp_enqueue_scripts', 'ipu_add_custom_scripts' ); 
+add_action('wp_enqueue_scripts', 'ipuc_add_custom_scripts' ); 
 
 // Add plug-in's stylesheets to the header of the pages
-function ipu_add_custom_styles() {  
+function ipuc_add_custom_styles() {  
     wp_register_style('custom-style', plugins_url( '/css/ipu-chart.css', __FILE__ ), array(), '0.9', 'all' );   
     wp_enqueue_style('custom-style');  
 }  
-add_action('wp_enqueue_scripts', 'ipu_add_custom_styles' );
+add_action('wp_enqueue_scripts', 'ipuc_add_custom_styles' );
+
+
+// Create custom plugin settings menu
+function ipuc_create_menu() {
+	//create new top-level menu
+	add_menu_page( 'IPU-Chart Plugin Settings', 'IPU-Chart', 'administrator', __FILE__, 'ipuc_settings_page', plugins_url('/img/ipuc-icon-16x16-framed.png', __FILE__));
+	//call register settings function
+	add_action('admin_init', 'register_ipuc_settings');
+}
+add_action('admin_menu', 'ipuc_create_menu');
+
+function register_ipuc_settings() {
+	//register our settings
+	register_setting( 'ipuc-settings-group', 'new_option_name' );
+	register_setting( 'ipuc-settings-group', 'some_other_option' );
+	register_setting( 'ipuc-settings-group', 'option_etc' );
+}
+
+function ipuc_settings_page() {
+?>
+	<div class="wrap">
+		<h2><?php _e('IPU-Chart Settings'); ?></h2>
+	</div>
+<?php
+} ?>

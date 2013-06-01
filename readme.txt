@@ -1,19 +1,21 @@
 === Plugin Name ===
 Contributors: thmufl
-Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, excel, numbers, svg, d3, d3js
+Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.6.2
+Stable tag: 0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates SVG based, animated bar, pie, donut, line, scatter, bubble and world map charts out of your spreadsheet data. A powerful, easy to use shortcode. And even easier with the free [IPU-Chart Editor Online](https://www.ipublia.com/support/ipu-chart-editor-online/)!
+Creates D3/SVG based charts out of a remote data service or spreadsheet data (csv, tsv or json).
 
 == Description ==
 
-IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line, scatter, bubble and world map charts out of your csv (comma separated) or tsv (tab separated) data.
+IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line, scatter, bubble and world map charts out of your csv (comma separated), tsv (tab separated) or json data.
 
-The plugin allows you to load the data to display as a chart from a remote service that delivers csv or tsv formatted data. You can also export you data from favorite spreadsheet application (Excel, Numbers, Open Office) and display it as a chart in your blog or page.
+**Now with json support!**
+
+The plugin allows you to load the data to display as a chart from a remote service that delivers json, csv or tsv formatted data. You can also export you data from favorite spreadsheet application (Excel, Numbers, Open Office) and display it as a chart in your blog or page.
 
 To create complex chart definitions and preview the immedialely use the free [IPU-Chart Editor Online](https://www.ipublia.com/support/ipu-chart-editor-online/) service.
 
@@ -24,13 +26,13 @@ The styling of all chart types can be done precisely and easily with css.
 = Features =
 
 * Create bar, pie, donut, line, scatter, bubble and world map charts
-* Enter the csv/tsv data directy in you blog or page
-* Load the csv/tsv data from a remote location
+* Enter the json, csv or tsv data directy in you blog or page
+* Load the json, csv or tsv data from a remote location
 * [IPU-Chart Editor Online](https://www.ipublia.com/support/ipu-chart-editor-online/) to easily define the shortcodes.
 * Create multiple views of the data
 * Style the charts with css
 * Tooltip for chart details (see screenshots)
-* Animated multi series bubble charts
+* Animated multi-series bubble charts
 * Animated world map and bar charts
 * Define colors and number formats of the chart
 * Create an additional table view of the data
@@ -48,7 +50,7 @@ Indonesia,248.22
 Brazil,205.72[/csv]
 </pre>
 
-Second, define the chart. Reference the csv (or tsv). Set the chart type and the category and value column. Define the format (string, number, integer, float or date) of the category and value columns. Enter a title and a description for the chart:
+Second, define the chart. Reference the csv (or tsv/json). Set the chart type and the category and value column. Define the format (string, number, integer, float or date) of the category and value columns. Enter a title and a description for the chart:
 
 <pre>
 [chart csv='#data' 
@@ -172,6 +174,11 @@ For questions or issues with IPU-Chart please use this support channels:
 * Update for bubble charts with 0 values in the data series
 * Sor for bubble charts
 
+= 0.7 =
+* Support for json added.
+* Support for data adapters added.
+* Minor layout changes (tooltip).
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -213,6 +220,11 @@ Minor bug fixes.
 = 0.6.2 =
 * Better calculation of left margin for bar, scatter and line charts
 * Update for bubble charts with 0 values in the data series
-* Sor for bubble charts
+* Sort for bubble charts
+
+= 0.7 =
+* Support for json added.
+* Support for data adapters added.
+* Minor layout changes (tooltip).
 
 
