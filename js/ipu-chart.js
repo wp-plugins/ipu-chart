@@ -348,9 +348,9 @@ function render(figure, data, type, category, value, format, color, sort, interp
     	
     else if(type.toLowerCase().trim() == "table") 
     	renderTable(figure, data, category, value, debug);
-    	
-    else if(type.toLowerCase().trim() == "line.multi") 
-    	renderLineMulti(figure, data, category, value, format, color, sort, interpolate, animate, debug);
+    
+    else 
+    	renderMultiSeriesExtension(type, figure, data, category, value, format, color, sort, interpolate, animate, debug);
 }
 
 function renderMapWorldCountries(figure, data, category, value, format, color, sort, interpolate, animate, debug) {
@@ -884,7 +884,7 @@ function renderBarHorizontal(figure, data, category, value, format, color, sort,
 	
 	var svg = figure.select("svg");
 	
-	var margin = {top: 20, right: 30, bottom: 40, left: d3.max(data, function(d) { return 6*d[category].toString().length; })},
+	var margin = {top: 20, right: 30, bottom: 40, left: d3.max(data, function(d) { return 8*d[category].toString().length; })},
     	width = parseInt(svg.attr("width")) - margin.left - margin.right,
     	height = parseInt(svg.attr("height")) - margin.top - margin.bottom;
 
@@ -905,7 +905,9 @@ function renderBarHorizontal(figure, data, category, value, format, color, sort,
     	.orient("left");
     	
     y.domain(data.map(function(d) { return d[category]; }));
-  	x.domain([d3.max(data, function(d) { return d[value]; }), 0]);
+    
+    var min = d3.min(data, function(d) { return d[value]; });
+  	x.domain([d3.max(data, function(d) { return d[value]; }), d3.min([min, 0])]);
        
     var chart = svg.append("g")
     	.attr("class", "chart")
@@ -939,10 +941,10 @@ function renderBarHorizontal(figure, data, category, value, format, color, sort,
 		.data(data)
 		.enter().append("rect")
       		.attr("class", "bar")
-      		.attr("x", 0)
+      		.attr("x", function(d) { return d[value] > 0 ? x(0) : x(d[value]); })
       		.attr("y", function(d) { return y(d[category]); })
       		.attr("height", y.rangeBand())
-      		.attr("width", function(d) { return x(d[value]); })
+      		.attr("width", function(d) { return d[value] > 0 ? x(d[value]) - x(0) : x(0) - x(d[value]);  })
       		.style("fill", function(d) { return color(d[category]); })
       		.style("opacity", defaultOpacity);
 
