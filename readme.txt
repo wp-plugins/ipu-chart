@@ -3,7 +3,7 @@ Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.7
+Stable tag: 0.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -179,6 +179,11 @@ For questions or issues with IPU-Chart please use this support channels:
 * Support for data adapters added.
 * Minor layout changes (tooltip).
 
+= 0.7.1 =
+* Support for negative values in horizontal bar charts added.
+* Second shortcode set with prefix 'ipu-' added.
+* Support for multi-series extension added.
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -226,5 +231,8 @@ Minor bug fixes.
 * Support for json added.
 * Support for data adapters added.
 * Minor layout changes (tooltip).
+
+= 0.7.1 =
+This version adds support for negative values for horizontal bar charts. A second shortcode set with the prefix 'ipu-' was added for interoperability with some plugins and themes.
 
 

@@ -4,12 +4,16 @@
 	Plugin URI: https://www.ipublia.com/support/ipu-chart-editor-online/
 	Description: Creates D3/SVG based charts out of your csv, tsv or jason data. Currently supports bar, pie, donut, line, scatter, bubble and world map charts. 
 	Author: Thomas Müller Flury, ipublia
-	Version: 0.7
+	Version: 0.7.1
 	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuchart
 	Domain Path: /lang
  */
 
+// Plugin Folder Path
+if (!defined('IPUC_PLUGIN_DIR'))
+	define( 'IPUC_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . basename(dirname( __FILE__ ) ) . '/');
+	
 // Helper to display plugin version in console logs
 function plugin_get_version() {
 	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -104,6 +108,13 @@ add_shortcode("json", "ipuc_tsv_func");
 add_shortcode("chart", "ipuc_chart_func");
 add_shortcode("table", "ipuc_table_func");
 
+// Second shortcode set for compability with some themes.
+add_shortcode("ipu-csv", "ipuc_csv_func");
+add_shortcode("ipu-tsv", "ipuc_tsv_func");
+add_shortcode("ipu-json", "ipuc_tsv_func");
+add_shortcode("ipu-chart", "ipuc_chart_func");
+add_shortcode("ipu-table", "ipuc_table_func");
+
 function ipuc_render_csv($id, $content) {
 	return "<div id='{$id}' class='csv' style='display:none;white-space:pre;'>{$content}</div>";
 }
@@ -169,27 +180,12 @@ function ipuc_add_custom_styles() {
 }  
 add_action('wp_enqueue_scripts', 'ipuc_add_custom_styles' );
 
-
-// Create custom plugin settings menu
-function ipuc_create_menu() {
-	//create new top-level menu
-	add_menu_page( 'IPU-Chart Plugin Settings', 'IPU-Chart', 'administrator', __FILE__, 'ipuc_settings_page', plugins_url('/img/ipuc-icon-16x16-framed.png', __FILE__));
-	//call register settings function
-	add_action('admin_init', 'register_ipuc_settings');
+// Add settings page (licenses etc.)
+function ipuc_settings_menu() {
+	add_menu_page('IPU-Chart Plugin Settings', 'IPU-Chart', 'administrator', __FILE__, 'ipuc_settings_page', plugins_url('img/ipuc-icon-16x16-bw.png', __FILE__));
 }
-add_action('admin_menu', 'ipuc_create_menu');
+add_action('admin_menu', 'ipuc_settings_menu');
 
-function register_ipuc_settings() {
-	//register our settings
-	register_setting( 'ipuc-settings-group', 'new_option_name' );
-	register_setting( 'ipuc-settings-group', 'some_other_option' );
-	register_setting( 'ipuc-settings-group', 'option_etc' );
-}
+require_once IPUC_PLUGIN_DIR . 'include/settings.php';
 
-function ipuc_settings_page() {
 ?>
-	<div class="wrap">
-		<h2><?php _e('IPU-Chart Settings'); ?></h2>
-	</div>
-<?php
-} ?>
