@@ -532,6 +532,7 @@ function renderBubble(figure, data, category, value, format, color, sort, interp
 		.attr("height", 12)
 		.style("stroke", "lightgray")
 		.style("fill", function(d, i) { return i == 0 ? "black" : "lightgray"})
+		.style("cursor", "pointer")
 		.on("click", changeSerie);
 		
 	series.append("text")
