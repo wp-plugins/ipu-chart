@@ -3,7 +3,7 @@ Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 0.7.1
+Stable tag: 0.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Creates D3/SVG based charts out of a remote data service or spreadsheet data (cs
 
 IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line, scatter, bubble and world map charts out of your csv (comma separated), tsv (tab separated) or json data.
 
-**Now with json support!**
+**Multi series extensions are available now**
 
 The plugin allows you to load the data to display as a chart from a remote service that delivers json, csv or tsv formatted data. You can also export you data from favorite spreadsheet application (Excel, Numbers, Open Office) and display it as a chart in your blog or page.
 
@@ -21,7 +21,7 @@ To create complex chart definitions and preview the immedialely use the free [IP
 
 IPU-Chart is based on [SVG](http://www.w3.org/TR/SVG/) and [D3](http://d3js.org/). It works perfectly on large computer screens as well as on tablets and smaller mobile screens. For browsers that do not support SVG an alternative image can be set.
 
-The styling of all chart types can be done precisely and easily with css.
+With [IPU-Chart Multi Series](https://www.ipublia.com/products) we add support for interactive multi series chart types.
 
 = Features =
 
@@ -29,13 +29,10 @@ The styling of all chart types can be done precisely and easily with css.
 * Enter the json, csv or tsv data directy in you blog or page
 * Load the json, csv or tsv data from a remote location
 * [IPU-Chart Editor Online](https://www.ipublia.com/support/ipu-chart-editor-online/) to easily define the shortcodes.
-* Create multiple views of the data
 * Style the charts with css
-* Tooltip for chart details (see screenshots)
 * Animated multi-series bubble charts
 * Animated world map and bar charts
-* Define colors and number formats of the chart
-* Create an additional table view of the data
+* Multi series extension
 
 = Usage =
 
@@ -184,6 +181,9 @@ For questions or issues with IPU-Chart please use this support channels:
 * Second shortcode set with prefix 'ipu-' added.
 * Support for multi-series extension added.
 
+= 0.7.2 =
+* Minor bug fixes and name changes.
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -234,5 +234,8 @@ Minor bug fixes.
 
 = 0.7.1 =
 This version adds support for negative values for horizontal bar charts. A second shortcode set with the prefix 'ipu-' was added for interoperability with some plugins and themes.
+
+= 0.7.2 =
+* Minor bug fixes and name changes.
 
 
