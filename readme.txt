@@ -2,18 +2,16 @@
 Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
-Tested up to: 3.5.1
-Stable tag: 0.7.2
+Tested up to: 3.6
+Stable tag: 0.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Creates D3/SVG based charts out of a remote data service or spreadsheet data (csv, tsv or json).
+Create D3/SVG based charts out of a remote data service or spreadsheet data (csv, tsv or json).
 
 == Description ==
 
 IPU-Chart is an easy to use shortcode that creates SVG based bar, pie, donut, line, scatter, bubble and world map charts out of your csv (comma separated), tsv (tab separated) or json data.
-
-**Multi series extensions are available now**
 
 The plugin allows you to load the data to display as a chart from a remote service that delivers json, csv or tsv formatted data. You can also export you data from favorite spreadsheet application (Excel, Numbers, Open Office) and display it as a chart in your blog or page.
 
@@ -184,6 +182,11 @@ For questions or issues with IPU-Chart please use this support channels:
 = 0.7.2 =
 * Minor bug fixes and name changes.
 
+= 0.7.3 =
+* Fixed tooltips in Google Chrome.
+* Fixed license activation problems with multi series extension.
+* Tested with WordPress 3.6
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -238,4 +241,7 @@ This version adds support for negative values for horizontal bar charts. A secon
 = 0.7.2 =
 * Minor bug fixes and name changes.
 
-
+= 0.7.3 =
+* Fixed tooltips in Google Chrome.
+* Fixed license activation problems with multi series extension.
+* Tested with WordPress 3.6

@@ -12,7 +12,7 @@ define('EDD_IPU_STORE_URL', 'https://www.ipublia.com');
 
 // the names of your products. This should match the download name in EDD exactly
 define('EDD_IPU_CHART_EDITOR', 'IPU-Chart Editor' );
-define('EDD_IPU_CHART_MULTI_SERIES', 'IPU-Chart Multi-Series' );
+define('EDD_IPU_CHART_MULTI_SERIES', 'IPU-Chart Multi Series Charts for WordPress' );
 
 
 /*
@@ -263,7 +263,8 @@ function ipuc_settings_page() {
 		<h3><?php _e('About'); ?></h3>
 
 		<div style='line-height: 1.75; width: 50%; padding: 0.25em 1em 0.25em 1em; border: 1px solid gray;'>
-			<p>With the <strong>IPU-Chart Multi-Series Extension</strong> we offer now support for animated, multi-series charts. And the <strong>IPU-Chart Editor</strong> can now be downloaded and installed at your own site.</p>
+			<p>With the <strong>IPU-Chart Multi Series Extension</strong> we offer now support for animated, multi-series charts. And the <strong>IPU-Chart Editor</strong> can now be downloaded and installed at your own site.</p>
+			<p><strong>Important: </strong>There is no license key needed for IPU-Chart Basic downloaded from the WordPress Plugin Directory!</p>
 			<p>Check our website for the <a href='https://www.ipublia.com' target='_blank'>new tools</a> and the <a href='https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/' target='_blank'>plugin's documentation</a>.</p>
 		</div>
 
@@ -307,7 +308,7 @@ function ipuc_settings_page() {
 				</tbody>
 			</table>
 			
-			<h3><?php _e('IPU-Chart Multi-Series'); ?></h3>
+			<h3><?php _e('IPU-Chart Multi Series'); ?></h3>
 			
 			<table class="form-table">
 				<tbody>
