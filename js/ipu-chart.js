@@ -3,12 +3,17 @@ var userAgent = navigator.userAgent.toLowerCase(),
 	iphone = /iphone/.test(userAgent),
 	ipod = /ipod/.test(userAgent),
 	ipad = /ipad/.test(userAgent),
-	touch_device = window.Touch ? true : false,
+	touch_device = is_touch_device(),
 	svgSupport = window.SVGSVGElement ? true : false,
 	pluginPath = getPluginPath(),
 	defaultOpacity = 0.8,
 	tooltip;
 	rawData = null;
+
+function is_touch_device() {
+	return 'ontouchstart' in window // works on most browsers 
+			|| 'onmsgesturechange' in window; // works on ie10
+};
 
 function getRawDataAsJSON() {
 	return JSON.stringify(rawData, undefined, 2);
@@ -545,7 +550,7 @@ function renderBubble(figure, data, category, value, format, color, sort, interp
 		
 	function changeSerie(d, i) {
 			
-		console.log("serie: " + i);	
+		if(debug) console.log("serie: " + i);	
 		d3.selectAll(".series rect").style("fill", "lightgray");
 		d3.select(this).style("fill", "black");
 		
