@@ -1,0 +1,35 @@
+.ip4 {
+	font-family: 'Open Sans', Helvetica, sans-serif;
+	font-size: 0.8em;
+}
+
+.ip4.tooltip {
+	display: none;
+    position: absolute;
+	line-height: 1.5;
+	color: Black;
+	font-family: sans-serif;
+	font-size: 0.8em;
+    padding: 4px 4px 4px 4px;
+    background: #FCFCFC;
+    border-radius: 2px;
+}
+
+.ip4.tooltip.selected {
+	display: inline;
+	opacity: 0.8;
+}
+
+.ip4 .axis path,
+.ip4 .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.ip4 .group { opacity: 0.8; }
+.ip4 .group.selected { opacity: 1.0; }
+
+.ip4 .values { opacity: 0.8; }
+.ip4 .values.selected { opacity: 1.0; }
+

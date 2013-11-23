@@ -1,132 +1,120 @@
-figure.chart {
-  //border: 2px solid lightgray;
-  //padding: 20px;
+.ipuc {
+	font-size: 0.8em;
 }
 
-.chart figcaption {
-  //border: 2px solid yellow;
-  //font: 0.9em sans-serif;
-}
-
-figure .legend {
+.ipuc .legend {
 	fill: dimGray;
 	stroke: dimGray;
 	stroke-opacity: 1.0;
 	stroke-width: 0.1;
 }
 
-.chart svg {
-  //border: 2px solid red;
-  font: 0.8em sans-serif;
+.ipuc p.error {
+	color: blue;
 }
 
 /* Map chart definitions */
 
-.ISO-3166-1 {
-	//color: transparent;
+.ipuc .ISO-3166-1 {
 	font-size: 0.8em;
 }
 
-.stroke {
+.ipuc .stroke {
   fill: none;
   stroke: dimgray;
   stroke-width: 0.5px;
 }
 
-.fill {
+.ipuc .fill {
   fill: #fff;
 }
 
-.graticule {
+.ipuc .graticule {
   fill: none;
   stroke: #777;
   stroke-width: .5px;
   stroke-opacity: .5;
 }
 
-.boundary {
+.ipuc .boundary {
   fill: none;
   stroke: #fff;
   stroke-width: .5px;
 }
 
 /* Bubble chart definitions */
-.node {
+.ipuc .node {
 
 }
  
-.node .leaf {
+.ipuc .node .leaf {
 }
 
 /* Pie chart definitions */
-.arc path {
+.ipuc .arc path {
   stroke: white;
 }
 
 /* Line chart definitions */
 
-.line {
+.ipuc .line {
   fill: none;
-  stroke: black;
+  stroke: dimGray;
   stroke-width: 1.5px;
+  shape-rendering: crispEdges;
 }
 
-.dot {
+/*
+.ipuc .dot {
 	fill: dimGray;
 }
+*/
 
 /* Axis definitions */
-
-.axis {
+	
+.ipuc .axis {
 	stroke: lightGray;
 	stroke-opacity: 0.8;
 	shape-rendering: crispEdges;
 }
 
-.x.axis {
+.ipuc .x.axis {
+
 }
 	
-.x.axis path {
+.ipuc .x.axis path {
 	fill: none;
 	stroke-opacity: 0.2;
 }
 	
-.x.axis * line {
-//stroke-dasharray: 9,5;
-}
-	
-.x.axis * text {
+.ipuc .x.axis * text {
 	stroke: dimGray;
 	stroke-width: 0.1;
 	stroke-opacity: 0.8;
 }
 
-.x.label {
+.ipuc .x.label {
 	fill: dimGray;
 	stroke: dimGray;
 	stroke-opacity: 1.0;
 	stroke-width: 0.1;
 }
 
-.y.axis {
+.ipuc .y.axis {
 }
 	
-.y.axis path {
+.ipuc .y.axis path {
 	fill: none;
 	stroke-opacity: 0.2;
 }
- 	 
-.y.axis * line {
-	//stroke-dasharray: 9,5;
-}
 
-.y.axis * text {
+.ipuc .y.axis * text {
 	stroke: dimGray;
 	stroke-width: 0.1;
 	stroke-opacity: 0.8;
 }
 
-.y.label {
+.ipuc .y.label {
 	fill: dimGray;
 	stroke: dimGray;
 	stroke-opacity: 1.0;
@@ -136,20 +124,23 @@ figure .legend {
 /* Tooltip definitions */
 
 div.iputooltip {
-	font: 0.75em sans-serif;
-	line-height: 1.0;
+	font: 0.8em sans-serif;
+	line-height: 1.2;
 	color: Black;
     position: absolute;
-    padding: 5px 10px 5px 10px;
-    background: GhostWhite; //#faf8ba; #ffffcc;
+    padding: 4px 4px 4px 4px;
+    background: #FCFCFC;
     border-radius: 2px;
-    //border: 1px solid lightgray;
-	//box-shadow: 10px 10px 5px lightgray;
 }
 
 div.iputooltip span.label {
 	display: inline-block;
 	width: 40%;
 	margin-right: 10px;
-	//font-weight: bold;
 }
+
+
+
+
+
+
