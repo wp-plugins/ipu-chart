@@ -3,7 +3,7 @@ Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.7.1
-Stable tag: 0.8
+Stable tag: 0.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,6 +69,8 @@ Data loaded from an url:
 }[/ip4]
 </code></pre>
 
+<p><strong>Note for existing users</strong>: The attribute-based, old interface is still included in the plugin.</p>
+
 = Further Information =
 
 1. The [ip4 User Guide](https://www.ipublia.com/support/docs/ip4-user-guide/) for detailed descriptions and examples.
@@ -103,6 +105,9 @@ For questions or issues with IPU-Chart please use these support channels:
 11. IPU-Chart Editor
 
 == Changelog ==
+
+= 0.8.1 =
+* Missing libraries added
 
 = 0.8 =
 * ip4 template engine
@@ -182,6 +187,9 @@ For questions or issues with IPU-Chart please use these support channels:
 * Initial version with horizontal bar charts
 
 == Upgrade Notice ==
+
+= 0.8.1 =
+* Missing libraries added
 
 = 0.8 =
 * ip4 template engine added
