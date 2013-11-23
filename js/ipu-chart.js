@@ -568,7 +568,7 @@ function renderBubble(figure, data, category, value, format, color, sort, interp
 			.select("circle")
 				.attr("r", function(d) { return d.r; });				
 	}
-		
+
 	if(touch_device) {
        	d3.selectAll(".leaf circle")
        		.on("touchstart", showTooltip);
@@ -1186,6 +1186,7 @@ function renderTableDeprecated(id, csv, title, debug) {
 }
 	
 function showTooltip(d) {
+	
 	d3.selectAll(".bar").transition()
        	.duration(100)
        	.style("opacity", defaultOpacity);
