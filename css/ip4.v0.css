@@ -33,3 +33,16 @@
 .ip4 .values { opacity: 0.8; }
 .ip4 .values.selected { opacity: 1.0; }
 
+.ip4 .dot { opacity: 0.8; }
+.ip4 .dot.selected { opacity: 1.0; }
+
+
+.ip4.barChart .x.axis path { display: none; }
+.ip4.groupedBarChart .x.axis path { display: none; }
+.ip4.lineChart .line { fill: none; stroke-width: 1.5px; }
+.ip4.multiLineChart .line { fill: none; stroke-width: 1.5px; }
+.ip4.queuedLineChart .line { fill: none; stroke-width: 1.5px;} 
+
+//.ip4 .dot.enter { stroke-width: 2; stroke: red; } 
+//.ip4 .dot.update { stroke-width: 2; stroke: green; } 
+//.ip4 .dot.exit { stroke-width: 2; stroke: blue; } 
