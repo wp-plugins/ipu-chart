@@ -3,7 +3,7 @@ Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.7.1
-Stable tag: 0.8.1
+Stable tag: 0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,13 +11,13 @@ Add beautiful, interactive live charts to your blog!
 
 == Description ==
 
-IPU-Chart is a Wordpress shortcode to create many different chart types inside your blog or page. It is based on the <strong>ip4</strong> template engine and works perfectly on large computer screens as well as on tablets and smaller mobile screens. The data to display can reside directly in the document or it can be fetched from a remote service. With version 0.8 a data update interval can be defined.
+IPU-Chart is a Wordpress shortcode to create many different chart types inside your blog or page. It is based on the <strong>ip4</strong> template engine and works perfectly on large computer screens as well as on tablets and smaller mobile screens. The data to display can reside directly in the document or it can be fetched from a remote service. With version 0.9 line charts can be created with the ip4 interface.
 
 IPU-Chart has many options to style a chart. Add your own color palette or use the functions to generate color palettes that come with the plugin.
 
 = Features =
 
-* Creates bar, pie, donut, line, scatter, bubble and world map charts
+* Creates bar, line, pie, donut, scatter, bubble and world map charts
 * Supports data in json, csv or tsv format
 * Lets you enter the data directy in a blog or page
 * Loads the data from a remote service
@@ -28,7 +28,7 @@ With the [IPU-Chart Multi Series Extension](https://www.ipublia.com/products/ipu
 
 = Usage =
 
-To display a bar chart inside a post or page add a div element with an id (that’s where the chart will be rendered) and enter the template configuration inside the [ip4] shortcode.
+To display a bar or line chart inside a post or page add a div element with an id (that’s where the chart will be rendered) and enter the template configuration inside the [ip4] shortcode.
 
 Data defined inside the document:
 <pre><code>
@@ -40,13 +40,13 @@ Data defined inside the document:
     "parentElement": "#kcal",
     "data": {
         "value": [
-           {"group": "Apple", "value": 55 },
-           {"group": "Avocado", "value": 145 },
-           {"group": "Banana", "value": 95 },
-           {"group": "Grapefruit", "value": 30 },
-           {"group": "Kiwi", "value": 55 },
-           {"group": "Mango", "value": 65 },
-           {"group": "Orange", "value": 45 }
+           {"x": "Apple", "y": 55 },
+           {"x": "Avocado", "y": 145 },
+           {"x": "Banana", "y": 95 },
+           {"x": "Grapefruit", "y": 30 },
+           {"x": "Kiwi", "y": 55 },
+           {"x": "Mango", "y": 65 },
+           {"x": "Orange", "y": 45 }
        ]},
     "d3": {
         "yLabel": "kilo calories (kcal)"
@@ -54,7 +54,9 @@ Data defined inside the document:
 }[/ip4]
 </code></pre>
 
-Data loaded from an url:
+To display a line chart just enter <code>ip4.lineChart()</code> as template.
+
+Data load the data from an url every 20 seconds:
 <pre><code>
 <div id="kcal"></div>
 ...
@@ -62,7 +64,8 @@ Data loaded from an url:
 [ip4]{
     "template": ip4.barChart(),
     "parentElement": "#kcal",
-    "data": { "uri": "http://example.org/kcal" },
+    "data": { "uri": "http://example.org/kcal",
+              "updateInterval": 20000 },
      "d3": {
         "yLabel": "kilo calories (kcal)"
     }
@@ -92,19 +95,19 @@ For questions or issues with IPU-Chart please use these support channels:
 
 == Screenshots ==
 
-1. Bar chart (with a tooltip)
-2. Horizontal bar chart
-3. Pie chart
-4. Donut chart
-5. Line chart
-6. Interpolated line chart
-7. Scatter chart
-8. Line chart with an alternative layout
-9. World map chart
-10. Bubble chart
-11. IPU-Chart Editor
+1. Bar chart
+2. Bar Chart with different color palette
+3. Line Chart
+4. Grouped Bar Chart (Extension)
+5. Multi Line Chart (Extension)
+6. Multi Line Chart with interpolated lines (Extension)
 
 == Changelog ==
+
+= 0.9 =
+* Line charts with ip4 interface added
+* Changed group/value data attributes for bar charts to x/y
+* Minor bug fixes
 
 = 0.8.1 =
 * Missing libraries added
@@ -187,6 +190,11 @@ For questions or issues with IPU-Chart please use these support channels:
 * Initial version with horizontal bar charts
 
 == Upgrade Notice ==
+
+= 0.9 =
+* Line charts with ip4 interface added
+* Changed group/value data attributes for bar charts to x/y
+* Minor bug fixes
 
 = 0.8.1 =
 * Missing libraries added
