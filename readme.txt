@@ -3,7 +3,7 @@ Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.7.1
-Stable tag: 0.9
+Stable tag: 0.95
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,9 +44,7 @@ Data defined inside the document:
            {"x": "Avocado", "y": 145 },
            {"x": "Banana", "y": 95 },
            {"x": "Grapefruit", "y": 30 },
-           {"x": "Kiwi", "y": 55 },
-           {"x": "Mango", "y": 65 },
-           {"x": "Orange", "y": 45 }
+           {"x": "Kiwi", "y": 55 }
        ]},
     "d3": {
         "yLabel": "kilo calories (kcal)"
@@ -95,14 +93,20 @@ For questions or issues with IPU-Chart please use these support channels:
 
 == Screenshots ==
 
-1. Bar chart
-2. Bar Chart with different color palette
+1. Bar Chart
+2. Pie Chart
 3. Line Chart
 4. Grouped Bar Chart (Extension)
-5. Multi Line Chart (Extension)
-6. Multi Line Chart with interpolated lines (Extension)
+5. Stacked Bar Chart (Extension)
+6. Multi Line Chart (Extension)
+7. Includes many color palettes
 
 == Changelog ==
+
+= 0.95 =
+* Pie Charts with ip4 interface added
+* Stacked Bar Charts with ip4 interface added (Extension)
+* Bug fixes and speed enhancements
 
 = 0.9 =
 * Line charts with ip4 interface added
