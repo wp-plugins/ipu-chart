@@ -1,0 +1,146 @@
+.ipuc {
+	font-size: 0.8em;
+}
+
+.ipuc .legend {
+	fill: dimGray;
+	stroke: dimGray;
+	stroke-opacity: 1.0;
+	stroke-width: 0.1;
+}
+
+.ipuc p.error {
+	color: blue;
+}
+
+/* Map chart definitions */
+
+.ipuc .ISO-3166-1 {
+	font-size: 0.8em;
+}
+
+.ipuc .stroke {
+  fill: none;
+  stroke: dimgray;
+  stroke-width: 0.5px;
+}
+
+.ipuc .fill {
+  fill: #fff;
+}
+
+.ipuc .graticule {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+.ipuc .boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+/* Bubble chart definitions */
+.ipuc .node {
+
+}
+ 
+.ipuc .node .leaf {
+}
+
+/* Pie chart definitions */
+.ipuc .arc path {
+  stroke: white;
+}
+
+/* Line chart definitions */
+
+.ipuc .line {
+  fill: none;
+  stroke: dimGray;
+  stroke-width: 1.5px;
+  shape-rendering: crispEdges;
+}
+
+/*
+.ipuc .dot {
+	fill: dimGray;
+}
+*/
+
+/* Axis definitions */
+	
+.ipuc .axis {
+	stroke: lightGray;
+	stroke-opacity: 0.8;
+	shape-rendering: crispEdges;
+}
+
+.ipuc .x.axis {
+
+}
+	
+.ipuc .x.axis path {
+	fill: none;
+	stroke-opacity: 0.2;
+}
+	
+.ipuc .x.axis * text {
+	stroke: dimGray;
+	stroke-width: 0.1;
+	stroke-opacity: 0.8;
+}
+
+.ipuc .x.label {
+	fill: dimGray;
+	stroke: dimGray;
+	stroke-opacity: 1.0;
+	stroke-width: 0.1;
+}
+
+.ipuc .y.axis {
+}
+	
+.ipuc .y.axis path {
+	fill: none;
+	stroke-opacity: 0.2;
+}
+
+.ipuc .y.axis * text {
+	stroke: dimGray;
+	stroke-width: 0.1;
+	stroke-opacity: 0.8;
+}
+
+.ipuc .y.label {
+	fill: dimGray;
+	stroke: dimGray;
+	stroke-opacity: 1.0;
+	stroke-width: 0.1;
+}
+
+/* Tooltip definitions */
+
+div.iputooltip {
+	font: 0.8em sans-serif;
+	line-height: 1.2;
+	color: Black;
+    position: absolute;
+    padding: 4px 4px 4px 4px;
+    background: #FCFCFC;
+    border-radius: 2px;
+}
+
+div.iputooltip span.label {
+	display: inline-block;
+	width: 40%;
+	margin-right: 10px;
+}
+
+
+
+
+
+
