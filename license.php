@@ -1,6 +1,6 @@
 <?php
 /*
-	ip3 - Templates for d3 and more.
+	ip4 - Templates for d3 and more.
 
 	Copyright (C) 2013  Thomas Müller Flury <thmf@ipublia.com>
 

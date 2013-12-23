@@ -4,7 +4,7 @@
 	Plugin URI: https://www.ipublia.com/support/ipu-chart-editor-online/
 	Description: D3/SVG based charts out of your csv, tsv or json data. Currently supports bar, pie, donut, line, scatter, bubble and world map charts. 
 	Author: Thomas Müller Flury, ipublia
-	Version: 0.8.1
+	Version: 1.0.1
 	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuc
 	Domain Path: /lang
@@ -193,7 +193,7 @@ function ipuc_render_table($id, $csv, $title, $debug) {
 // Add plug-in's scripts to the header of the pages
 function ipuc_add_custom_scripts() {   
     //wp_register_script('custom-script-d3', plugins_url( '/js/d3/d3.v3.min.js', __FILE__ ));
-    wp_register_script('custom-script-ip4-v0', plugins_url( '/js/ip4.v0.min.js', __FILE__ ));
+    wp_register_script('custom-script-ip4', plugins_url( '/js/ip4.v1.min.js', __FILE__ ));
     wp_register_script('custom-script-ipuc', plugins_url( '/js/ipu-chart.js', __FILE__ )); 
     wp_register_script('custom-script-queue', plugins_url( '/js/d3/queue.v1.min.js', __FILE__ ));
     wp_register_script('custom-script-d3-geo-projection', plugins_url( '/js/d3/d3.geo.projection.v0.min.js', __FILE__ ));
@@ -201,7 +201,7 @@ function ipuc_add_custom_scripts() {
  	wp_register_script('custom-script-colorbrewer', plugins_url( '/js/colorbrewer/colorbrewer.js', __FILE__ ));
   
     //wp_enqueue_script('custom-script-d3');
-    wp_enqueue_script('custom-script-ip4-v0');
+    wp_enqueue_script('custom-script-ip4');
     wp_enqueue_script('custom-script-ipuc');
     wp_enqueue_script('custom-script-queue');
     wp_enqueue_script('custom-script-d3-geo-projection');
@@ -211,11 +211,11 @@ function ipuc_add_custom_scripts() {
 add_action('wp_enqueue_scripts', 'ipuc_add_custom_scripts' ); 
 
 // Add plug-in's stylesheets to the header of the pages
-function ipuc_add_custom_styles() {  
+function ipuc_add_custom_styles() {
+    wp_register_style('custom-style-ip4', plugins_url( '/css/ip4.v1.css', __FILE__ ), array(), '0.8', 'all' ); 
     wp_register_style('custom-style-ipuc', plugins_url( '/css/ipu-chart.css', __FILE__ ), array(), '0.7', 'all' );   
-    wp_register_style('custom-style-ip4-v0', plugins_url( '/css/ip4.v0.css', __FILE__ ), array(), '0.8', 'all' ); 
 	wp_enqueue_style('custom-style-ipuc');  
-    wp_enqueue_style('custom-style-ip4-v0'); 
+    wp_enqueue_style('custom-style-ip4'); 
 }  
 add_action('wp_enqueue_scripts', 'ipuc_add_custom_styles' );
 
