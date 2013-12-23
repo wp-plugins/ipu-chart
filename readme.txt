@@ -2,8 +2,8 @@
 Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
-Tested up to: 3.7.1
-Stable tag: 0.95.1
+Tested up to: 3.8
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,20 +11,20 @@ Add beautiful, interactive live charts to your blog!
 
 == Description ==
 
-IPU-Chart is a Wordpress shortcode to create many different chart types inside your blog or page. It is based on the <strong>ip4</strong> template engine and works perfectly on large computer screens as well as on tablets and smaller mobile screens. The data to display can reside directly in the document or it can be fetched from a remote service. With version 0.9 line charts can be created with the ip4 interface.
+IPU-Chart is a Wordpress shortcode to create many different chart types inside your blog or page. It works perfectly on large computer screens as well as on tablets and smaller mobile screens. The data to display can reside directly in the document or it can be fetched from a remote service.
 
 IPU-Chart has many options to style a chart. Add your own color palette or use the functions to generate color palettes that come with the plugin.
 
 = Features =
 
 * Creates bar, line, pie, donut, scatter, bubble and world map charts
-* Supports data in json, csv or tsv format
+* Supports data in json, csv or tsv format (Excel, Numbers)
 * Lets you enter the data directy in a blog or page
-* Loads the data from a remote service
+* Loads the data from a remote service (database)
 * Updates the data automatically if desired
 * Has many options to style a chart with css or built-in color functions 
 
-With the [IPU-Chart Multi Series Extension](https://www.ipublia.com/products/ipu-chart-multi-series-charts-for-wordpress/) IPU-Chart supports also multi series charts.
+With the [IPU-Chart Multi Series Extension](https://www.ipublia.com/downloads/ipu-chart-multi-series-charts-for-wordpress/) IPU-Chart supports also multi series charts.
 
 = Usage =
 
@@ -32,39 +32,42 @@ To display a bar or line chart inside a post or page add a div element with an i
 
 Data defined inside the document:
 <pre><code>
-<div id="kcal"></div>
+<div id="kcal" style="width:90%; font-size:0.8em"></div>
 ...
 
 [ip4]{
     "template": ip4.barChart(),
     "parentElement": "#kcal",
     "data": {
-        "value": [
-           {"x": "Apple", "y": 55 },
-           {"x": "Avocado", "y": 145 },
-           {"x": "Banana", "y": 95 },
-           {"x": "Grapefruit", "y": 30 },
-           {"x": "Kiwi", "y": 55 }
-       ]},
+        "reader": ip4.dataReader()
+            .data([ {"x": "Apple", "y": 55 },
+                    {"x": "Avocado", "y": 145 },
+                    {"x": "Banana", "y": 95 },
+                    {"x": "Grapefruit", "y": 30 },
+                    {"x": "Kiwi", "y": 55 } ])
+    },
     "d3": {
         "yLabel": "kilo calories (kcal)"
     }
 }[/ip4]
 </code></pre>
 
-To display a line chart just enter <code>ip4.lineChart()</code> as template.
+To display a line or pie chart just enter <code>ip4.lineChart()</code> or <code>ip4.pieChart()</code> as template.
 
-Data load the data from an url every 20 seconds:
+Data refresh the data from an url every 20 seconds:
 <pre><code>
-<div id="kcal"></div>
+<div id="kcal" style="width:90%; font-size:0.8em"></div>
 ...
 
 [ip4]{
     "template": ip4.barChart(),
     "parentElement": "#kcal",
-    "data": { "uri": "http://example.org/kcal",
-              "updateInterval": 20000 },
-     "d3": {
+    "data": {
+        "reader": ip4.dataReader()
+                      .uri("http://example.org/kcal")
+                      .interval(20000)
+    },
+    "d3": {
         "yLabel": "kilo calories (kcal)"
     }
 }[/ip4]
@@ -102,7 +105,6 @@ For questions or issues with IPU-Chart please use these support channels:
 7. Includes many color palettes
 
 == Changelog ==
-
 = 0.95.1 =
 * Bug fix
 
@@ -198,5 +200,9 @@ For questions or issues with IPU-Chart please use these support channels:
 
 == Upgrade Notice ==
 
-= 0.95.1 =
-* Bug fix
+= 1.0 =
+* Added ip4.dataReader
+* Redefined data adapters (integrated with data reader)
+* Enhanced error handling
+* Enhanced template functionality
+

@@ -3,11 +3,17 @@
 	font-size: 0.8em;
 }
 
+.message .error {
+	font-size: 1.2em;
+	fill: crimson;
+	text-anchor: middle;
+}
+
 .ip4.tooltip {
 	display: none;
     position: absolute;
 	line-height: 1.5;
-	color: Black;
+	color: black;
 	font-family: sans-serif;
 	font-size: 0.8em;
     padding: 4px 4px 4px 4px;
@@ -39,14 +45,8 @@
 .ip4 .arc { opacity: 0.8; }
 .ip4 .arc.selected { opacity: 1.0; }
 
-
 .ip4.barChart .x.axis path { display: none; }
 .ip4.groupedBarChart .x.axis path { display: none; }
 .ip4.stackedBarChart .x.axis path { display: none; }
 .ip4.lineChart .line { fill: none; stroke-width: 2.5px; }
 .ip4.multiLineChart .line { fill: none; stroke-width: 2.5px; }
-.ip4.queuedLineChart .line { fill: none; stroke-width: 2.5px;} 
-
-//.ip4 .dot.enter { stroke-width: 2; stroke: red; } 
-//.ip4 .dot.update { stroke-width: 2; stroke: green; } 
-//.ip4 .dot.exit { stroke-width: 2; stroke: blue; } 
