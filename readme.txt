@@ -2,12 +2,12 @@
 Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
-Tested up to: 3.8
-Stable tag: 1.0.1
+Tested up to: 3.8.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Add beautiful, interactive live charts to your blog!
+Present your data with interactive live charts to your users!
 
 == Description ==
 
@@ -105,6 +105,13 @@ For questions or issues with IPU-Chart please use these support channels:
 7. Includes many color palettes
 
 == Changelog ==
+
+= 1.0.2 =
+* Fixed error when loading json data from an url
+
+= 1.0.1 =
+* Bug fixes
+
 = 0.95.1 =
 * Bug fix
 
@@ -200,9 +207,5 @@ For questions or issues with IPU-Chart please use these support channels:
 
 == Upgrade Notice ==
 
-= 1.0 =
-* Added ip4.dataReader
-* Redefined data adapters (integrated with data reader)
-* Enhanced error handling
-* Enhanced template functionality
-
+= 1.0.2 =
+* Fixed error when loading json data from an url

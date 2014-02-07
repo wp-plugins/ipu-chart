@@ -4,7 +4,7 @@
 	Plugin URI: https://www.ipublia.com/support/ipu-chart-editor-online/
 	Description: D3/SVG based charts out of your csv, tsv or json data. Currently supports bar, pie, donut, line, scatter, bubble and world map charts. 
 	Author: Thomas Müller Flury, ipublia
-	Version: 1.0.1
+	Version: 1.0.2
 	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuc
 	Domain Path: /lang
