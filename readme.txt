@@ -3,7 +3,7 @@ Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 3.8.1
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,9 @@ For questions or issues with IPU-Chart please use these support channels:
 
 == Changelog ==
 
+= 1.0.3 =
+* Adapter called now with inline json data.
+
 = 1.0.2 =
 * Fixed error when loading json data from an url
 
@@ -206,6 +209,9 @@ For questions or issues with IPU-Chart please use these support channels:
 * Initial version with horizontal bar charts
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+* Adapter called now with inline json data.
 
 = 1.0.2 =
 * Fixed error when loading json data from an url
