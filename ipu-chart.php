@@ -1,10 +1,10 @@
 <?php
 /*
 	Plugin Name: IPU-Chart
-	Plugin URI: https://www.ipublia.com/support/ipu-chart-editor-online/
+	Plugin URI: https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/
 	Description: D3/SVG based charts out of your csv, tsv or json data. Currently supports bar, pie, donut, line, scatter, bubble and world map charts. 
 	Author: Thomas Müller Flury, ipublia
-	Version: 1.0.3
+	Version: 1.0.4
 	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuc
 	Domain Path: /lang
@@ -192,30 +192,31 @@ function ipuc_render_table($id, $csv, $title, $debug) {
 
 // Add plug-in's scripts to the header of the pages
 function ipuc_add_custom_scripts() {   
-    //wp_register_script('custom-script-d3', plugins_url( '/js/d3/d3.v3.min.js', __FILE__ ));
-    wp_register_script('custom-script-ip4', plugins_url( '/js/ip4.v1.min.js', __FILE__ ));
-    wp_register_script('custom-script-ipuc', plugins_url( '/js/ipu-chart.js', __FILE__ )); 
-    wp_register_script('custom-script-queue', plugins_url( '/js/d3/queue.v1.min.js', __FILE__ ));
-    wp_register_script('custom-script-d3-geo-projection', plugins_url( '/js/d3/d3.geo.projection.v0.min.js', __FILE__ ));
- 	wp_register_script('custom-script-topojson', plugins_url( '/js/d3/topojson.v0.min.js', __FILE__ ));
- 	wp_register_script('custom-script-colorbrewer', plugins_url( '/js/colorbrewer/colorbrewer.js', __FILE__ ));
+    wp_register_script('d3-script', plugins_url( '/lib/d3/d3.min.js', __FILE__ ));
+    wp_register_script('queue-script', plugins_url( '/lib/queue/queue.min.js', __FILE__ ));
+    wp_register_script('d3-geo-projection-script', plugins_url( '/lib/geo/d3.geo.projection.v0.min.js', __FILE__ ));
+ 	wp_register_script('d3-topojson-script', plugins_url( '/lib/geo/topojson.v0.min.js', __FILE__ ));
+ 	wp_register_script('colorbrewer-script', plugins_url( '/lib/colorbrewer/colorbrewer.js', __FILE__ ));
+ 	wp_register_script('ip4-script', plugins_url( '/lib/ip4.v1.min.js', __FILE__ ));
+    wp_register_script('ipuchart-script', plugins_url( '/lib/ipu-chart.js', __FILE__ )); 
   
-    //wp_enqueue_script('custom-script-d3');
-    wp_enqueue_script('custom-script-ip4');
-    wp_enqueue_script('custom-script-ipuc');
-    wp_enqueue_script('custom-script-queue');
-    wp_enqueue_script('custom-script-d3-geo-projection');
-    wp_enqueue_script('custom-script-topojson'); 
-    wp_enqueue_script('custom-script-colorbrewer');  
+    wp_enqueue_script('d3-script');
+    wp_enqueue_script('queue-script');
+    wp_enqueue_script('d3-geo-projection-script');
+    wp_enqueue_script('d3-topojson-script'); 
+    wp_enqueue_script('colorbrewer-script'); 
+    
+	wp_enqueue_script('ip4-script', null, array('d3-script', 'queue-script', 'd3-geo-projection-script', 'd3-topojson-script', 'colorbrewer-script')); 
+	wp_enqueue_script('ipuchart-script', null, array('d3-script', 'queue-script', 'd3-geo-projection-script', 'd3-topojson-script', 'colorbrewer-script')); 
 } 
 add_action('wp_enqueue_scripts', 'ipuc_add_custom_scripts' ); 
 
 // Add plug-in's stylesheets to the header of the pages
 function ipuc_add_custom_styles() {
-    wp_register_style('custom-style-ip4', plugins_url( '/css/ip4.v1.css', __FILE__ ), array(), '0.8', 'all' ); 
-    wp_register_style('custom-style-ipuc', plugins_url( '/css/ipu-chart.css', __FILE__ ), array(), '0.7', 'all' );   
-	wp_enqueue_style('custom-style-ipuc');  
-    wp_enqueue_style('custom-style-ip4'); 
+    wp_register_style('ip4-style', plugins_url( '/css/ip4.v1.css', __FILE__ ), array(), '0.8', 'all' ); 
+    wp_register_style('ipuchart-style', plugins_url( '/css/ipu-chart.css', __FILE__ ), array(), '0.7', 'all' );   
+	wp_enqueue_style('ipuchart-style');  
+    wp_enqueue_style('ip4-style'); 
 }  
 add_action('wp_enqueue_scripts', 'ipuc_add_custom_styles' );
 

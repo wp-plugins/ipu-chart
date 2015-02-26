@@ -2,8 +2,8 @@
 Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
-Tested up to: 3.8.1
-Stable tag: 1.0.3
+Tested up to: 4.1.1
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,9 +22,7 @@ IPU-Chart has many options to style a chart. Add your own color palette or use t
 * Lets you enter the data directy in a blog or page
 * Loads the data from a remote service (database)
 * Updates the data automatically if desired
-* Has many options to style a chart with css or built-in color functions 
-
-With the [IPU-Chart Multi Series Extension](https://www.ipublia.com/downloads/ipu-chart-multi-series-charts-for-wordpress/) IPU-Chart supports also multi series charts.
+* Has many options to style a chart with css or built-in color functions
 
 = Usage =
 
@@ -99,12 +97,12 @@ For questions or issues with IPU-Chart please use these support channels:
 1. Bar Chart
 2. Pie Chart
 3. Line Chart
-4. Grouped Bar Chart (Extension)
-5. Stacked Bar Chart (Extension)
-6. Multi Line Chart (Extension)
-7. Includes many color palettes
 
 == Changelog ==
+
+= 1.0.4 =
+* Maintenance release, updated d3 library.
+* Minor bug fixes.
 
 = 1.0.3 =
 * Adapter called now with inline json data.
@@ -210,8 +208,7 @@ For questions or issues with IPU-Chart please use these support channels:
 
 == Upgrade Notice ==
 
-= 1.0.3 =
-* Adapter called now with inline json data.
+= 1.0.4 =
+* Maintenance release, updated d3 library.
+* Minor bug fixes.
 
-= 1.0.2 =
-* Fixed error when loading json data from an url
