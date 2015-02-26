@@ -3,7 +3,7 @@ Contributors: thmufl
 Tags: chart, chart editor, bar chart, pie chart, line chart, donut chart, scatter chart, bubble chart, world map, map, countries, animation, quotes, diagram, csv, tsv, json, excel, numbers, svg, d3, d3js
 Requires at least: 3.0.1
 Tested up to: 4.1.1
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,9 @@ For questions or issues with IPU-Chart please use these support channels:
 3. Line Chart
 
 == Changelog ==
+
+= 1.0.5 =
+* Fixed javascript path problem.
 
 = 1.0.4 =
 * Maintenance release, updated d3 library.
