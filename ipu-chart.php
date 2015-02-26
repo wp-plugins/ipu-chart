@@ -4,7 +4,7 @@
 	Plugin URI: https://www.ipublia.com/support/docs/ipu-chart-for-wordpress-user-guide/
 	Description: D3/SVG based charts out of your csv, tsv or json data. Currently supports bar, pie, donut, line, scatter, bubble and world map charts. 
 	Author: Thomas Müller Flury, ipublia
-	Version: 1.0.4
+	Version: 1.0.5
 	Author URI: https://www.ipublia.com/author/thmufl/
 	Text Domain: ipuc
 	Domain Path: /lang
